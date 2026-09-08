@@ -1913,10 +1913,192 @@ exos:[
 {q:"Résous z⁴ + 3z² - 4 = 0 dans ℂ.",r:"On pose Z = z². Alors Z² + 3Z - 4 = 0 donne Z = 1 ou Z = -4. D'où z = ±1 ou z = ±2i : quatre solutions."}
 ]}
 ];
+const CH_EXAMS = [
+{t:"DS blanc n°1 — Chapitre Nombres", obj:["Se mettre en conditions d'examen","Gérer son temps sur quatre exercices","Rédiger une récurrence notée"], html:`
+<div class="obj"><p>Conditions</p><ul>
+<li>Durée : 1h30. Barème sur 20. Calculatrice et documents interdits.</li>
+<li>Fais le sujet en entier avant de regarder le moindre corrigé, en bas de page.</li>
+<li>La rédaction compte : une récurrence sans initialisation perd la moitié des points.</li>
+</ul></div>
+
+<h4>Exercice 1 — Questions rapides (4 points)</h4>
+<ol>
+<li>Mettre 84/126 sous forme irréductible.</li>
+<li>Montrer que si n est impair, alors n² + n est pair.</li>
+<li>Résoudre -5x + 3 ≥ 18 et donner l'ensemble des solutions sous forme d'intervalle.</li>
+<li>Simplifier (a<sup>3</sup>b<sup>-2</sup>)<sup>2</sup> / (a<sup>-1</sup>b<sup>3</sup>) pour a et b non nuls.</li>
+</ol>
+
+<h4>Exercice 2 — Symbole somme (5 points)</h4>
+<ol>
+<li>Calculer Σ (i = 1 à n) (2i - 1) et simplifier le résultat au maximum.</li>
+<li>Calculer Σ (i = 0 à n) 3<sup>i</sup>.</li>
+<li>Calculer Σ (i = 1 à n) (1/2)<sup>i</sup>.</li>
+<li>Par un changement d'indice, montrer que Σ (i = 2 à n+1) (i - 1) = n(n+1)/2.</li>
+</ol>
+
+<h4>Exercice 3 — Raisonnement par récurrence (6 points)</h4>
+<ol>
+<li>Démontrer par récurrence que pour tout entier n ≥ 0, Σ (i = 0 à n) i² = n(n+1)(2n+1)/6.</li>
+<li>Démontrer par récurrence que 7 divise 8<sup>n</sup> - 1 pour tout entier n ≥ 0.</li>
+</ol>
+
+<h4>Exercice 4 — Binôme et dénombrement (5 points)</h4>
+<ol>
+<li>Déterminer le coefficient de x<sup>5</sup> dans le développement de (2x - 1)<sup>7</sup>.</li>
+<li>En utilisant le binôme de Newton, calculer Σ (i = 0 à n) « i parmi n » puis Σ (i = 0 à n) (-1)<sup>i</sup> « i parmi n » pour n ≥ 1.</li>
+<li>Un ensemble E possède 7 éléments. Combien E a-t-il de parties à 3 éléments ? Combien de parties en tout ?</li>
+</ol>`,
+retenir:"Sur un DS de ce type, l'exercice de récurrence pèse presque un tiers de la note et ne demande aucune idée : uniquement de la rédaction propre. C'est là que se gagnent les points les plus faciles.",
+exos:[
+{q:"Corrigé de l'exercice 1 (4 points)",r:"1) 84 = 42×2 et 126 = 42×3, donc 84/126 = 2/3. — 2) n impair s'écrit n = 2k+1. Alors n² + n = n(n+1) = (2k+1)(2k+2) = 2(2k+1)(k+1), qui est pair. On peut aussi dire que le produit de deux entiers consécutifs est toujours pair. — 3) -5x ≥ 15, division par -5 avec renversement : x ≤ -3. Solutions : ]-∞, -3]. — 4) Numérateur : a⁶b⁻⁴. On divise par a⁻¹b³ : a^(6+1) b^(-4-3) = a⁷b⁻⁷, soit (a/b)⁷."},
+{q:"Corrigé de l'exercice 2 (5 points)",r:"1) Σ(2i-1) = 2Σi - Σ1 = 2 × n(n+1)/2 - n = n² + n - n = n². Joli résultat : la somme des n premiers impairs vaut n². — 2) Somme géométrique de raison 3 : (3^(n+1) - 1)/(3 - 1) = (3^(n+1) - 1)/2. — 3) On calcule la somme de 0 à n puis on retire le terme i = 0 qui vaut 1 : (1 - (1/2)^(n+1))/(1/2) - 1 = 2 - (1/2)^n - 1 = 1 - (1/2)^n. — 4) On pose j = i - 1. Quand i va de 2 à n+1, j va de 1 à n, et i - 1 = j. La somme devient Σ(j = 1 à n) j = n(n+1)/2."},
+{q:"Corrigé de l'exercice 3 (6 points)",r:"1) Initialisation, n = 0 : la somme vaut 0 et la formule donne 0×1×1/6 = 0. Vraie. Hérédité : on suppose la formule au rang n. Alors la somme jusqu'à n+1 vaut n(n+1)(2n+1)/6 + (n+1)². On factorise par (n+1)/6 : (n+1)[n(2n+1) + 6(n+1)]/6 = (n+1)(2n² + 7n + 6)/6. Or 2n² + 7n + 6 = (n+2)(2n+3), donc on obtient (n+1)(n+2)(2n+3)/6, qui est bien la formule au rang n+1. Conclusion : vraie pour tout n ≥ 0. — 2) Initialisation, n = 0 : 8⁰ - 1 = 0, divisible par 7. Hérédité : on suppose 8^n - 1 = 7k. Alors 8^(n+1) - 1 = 8 × 8^n - 1 = 8(8^n - 1) + 7 = 56k + 7 = 7(8k + 1), divisible par 7. Conclusion pour tout n ≥ 0."},
+{q:"Corrigé de l'exercice 4 (5 points)",r:"1) On applique le binôme avec a = 2x et b = -1 : le terme en x⁵ est « 5 parmi 7 » × (2x)⁵ × (-1)² = 21 × 32 x⁵. Le coefficient vaut 672. — 2) Avec a = b = 1 : Σ « i parmi n » = (1+1)^n = 2^n. Avec a = -1 et b = 1 : Σ (-1)^i « i parmi n » = (-1+1)^n = 0 pour n ≥ 1. — 3) Parties à 3 éléments : « 3 parmi 7 » = 35. Parties en tout : 2⁷ = 128, ce qui est cohérent avec la question précédente."}
+]},
+
+{t:"DS blanc n°2 — Nombres complexes", obj:["S'entraîner sur un sujet complet de complexes","Passer d'une forme à l'autre sous contrainte de temps","Traiter une équation à coefficients complexes"], html:`
+<div class="obj"><p>Conditions</p><ul>
+<li>Durée : 1h30. Barème sur 20. Calculatrice interdite.</li>
+<li>Toute racine carrée d'un complexe doit être justifiée, jamais écrite avec le symbole √.</li>
+</ul></div>
+
+<h4>Exercice 1 — Calculs sous forme algébrique (4 points)</h4>
+<ol>
+<li>Calculer (3 - 2i)(1 + 4i).</li>
+<li>Mettre (2 + i)/(3 - 2i) sous forme algébrique.</li>
+<li>Calculer i<sup>2027</sup>.</li>
+<li>Déterminer les réels x et y tels que (x + y) + i(x - y) = 6 - 2i.</li>
+</ol>
+
+<h4>Exercice 2 — Module, argument, puissances (5 points)</h4>
+<p>On pose z = -√3 + i.</p>
+<ol>
+<li>Calculer |z|.</li>
+<li>Mettre z sous forme exponentielle.</li>
+<li>En déduire z<sup>6</sup> sous forme algébrique.</li>
+<li>Déterminer le plus petit entier n ≥ 1 tel que z<sup>n</sup> soit un réel.</li>
+</ol>
+
+<h4>Exercice 3 — Racine carrée et second degré (5 points)</h4>
+<ol>
+<li>Déterminer les racines carrées de -7 + 24i.</li>
+<li>Résoudre dans ℂ l'équation z² - (5 + i)z + (8 + i) = 0.</li>
+<li>Vérifier le résultat à l'aide de la somme et du produit des racines.</li>
+</ol>
+
+<h4>Exercice 4 — Trigonométrie et lieux géométriques (6 points)</h4>
+<ol>
+<li>Linéariser sin³θ, c'est-à-dire l'exprimer comme somme de sinus d'angles multiples.</li>
+<li>À l'aide de la formule de Moivre, exprimer cos(4θ) en fonction de cos θ uniquement.</li>
+<li>Déterminer l'ensemble des points M d'affixe z vérifiant |z - 2| = |z + i|.</li>
+<li>Déterminer l'ensemble des points M d'affixe z vérifiant |z - 1 + 2i| = 3.</li>
+</ol>`,
+retenir:"Deux réflexes qui rapportent gros : passer en forme exponentielle dès qu'une puissance apparaît, et traduire tout module en distance pour les lieux géométriques.",
+exos:[
+{q:"Corrigé de l'exercice 1 (4 points)",r:"1) 3 + 12i - 2i - 8i² = 3 + 10i + 8 = 11 + 10i. — 2) On multiplie haut et bas par 3 + 2i : numérateur (2+i)(3+2i) = 6 + 4i + 3i - 2 = 4 + 7i, dénominateur 9 + 4 = 13. Résultat : 4/13 + (7/13)i. — 3) 2027 = 4 × 506 + 3, donc i^2027 = i³ = -i. — 4) Par unicité de l'écriture algébrique : x + y = 6 et x - y = -2. En additionnant, 2x = 4 donc x = 2 et y = 4."},
+{q:"Corrigé de l'exercice 2 (5 points)",r:"1) |z| = √(3 + 1) = 2. — 2) z = 2(-√3/2 + i/2). On cherche l'angle dont le cosinus vaut -√3/2 et le sinus 1/2 : c'est 5π/6. Donc z = 2 e^(i5π/6). — 3) z⁶ = 2⁶ e^(i5π) = 64 e^(iπ) = -64. (5π est congru à π modulo 2π.) — 4) z^n est réel quand son argument 5nπ/6 est un multiple de π, c'est-à-dire quand 5n/6 est entier, donc quand n est multiple de 6. Le plus petit est n = 6."},
+{q:"Corrigé de l'exercice 3 (5 points)",r:"1) On pose w = x + iy avec w² = -7 + 24i. Le module vaut √(49 + 576) = 25. Système : x² + y² = 25, x² - y² = -7, et 2xy = 24 donc xy = 12 > 0. En additionnant les deux premières : 2x² = 18, d'où x = ±3 ; en les soustrayant : 2y² = 32, d'où y = ±4. Le produit étant positif, x et y sont de même signe : les racines sont 3 + 4i et -3 - 4i. — 2) Δ = (5+i)² - 4(8+i) = 25 + 10i - 1 - 32 - 4i = -8 + 6i. Racine carrée de Δ : module 10, système x² + y² = 10, x² - y² = -8, xy = 3 > 0, d'où x = ±1 et y = ±3 de même signe : δ = 1 + 3i. Solutions : ((5+i) + (1+3i))/2 = 3 + 2i et ((5+i) - (1+3i))/2 = 2 - i. — 3) Somme : (3+2i) + (2-i) = 5 + i, c'est bien -b/a. Produit : (3+2i)(2-i) = 6 - 3i + 4i + 2 = 8 + i, c'est bien c/a."},
+{q:"Corrigé de l'exercice 4 (6 points)",r:"1) Par Euler, sin³θ = ((e^(iθ) - e^(-iθ))/(2i))³. Le dénominateur vaut (2i)³ = -8i. Le numérateur se développe en e^(3iθ) - 3e^(iθ) + 3e^(-iθ) - e^(-3iθ) = 2i sin(3θ) - 6i sin(θ). En divisant par -8i : sin³θ = (3 sin θ - sin 3θ)/4. — 2) cos(4θ) = 2cos²(2θ) - 1 = 2(2cos²θ - 1)² - 1 = 8cos⁴θ - 8cos²θ + 1. — 3) |z - 2| est la distance de M au point A d'affixe 2, et |z + i| la distance au point B d'affixe -i. L'ensemble est donc la médiatrice du segment [AB]. — 4) |z - (1 - 2i)| = 3 est la distance de M au point d'affixe 1 - 2i. L'ensemble est le cercle de centre ce point et de rayon 3."}
+]},
+
+{t:"Partiel blanc — sujet complet 2h", obj:["Traiter un sujet couvrant les deux chapitres","Aborder un problème guidé en plusieurs questions","Repérer ses points faibles avant le vrai partiel"], html:`
+<div class="obj"><p>Conditions</p><ul>
+<li>Durée : 2h. Barème sur 20. Documents et calculatrice interdits.</li>
+<li>Les exercices sont indépendants. Le problème final est guidé : chaque question sert à la suivante.</li>
+</ul></div>
+
+<h4>Exercice 1 — Vrai ou faux, avec justification (4 points)</h4>
+<p>Pour chaque affirmation, dire si elle est vraie ou fausse et le justifier en une ou deux lignes.</p>
+<ol>
+<li>Pour tous réels x et y, si x ≤ y alors x² ≤ y².</li>
+<li>Le nombre 0 est imaginaire pur.</li>
+<li>Pour tout complexe z, |z + z'| = |z| + |z'|.</li>
+<li>Si n est un entier tel que n² est divisible par 3, alors n est divisible par 3.</li>
+</ol>
+
+<h4>Exercice 2 — Sommes et récurrence (4 points)</h4>
+<ol>
+<li>Calculer Σ (i = 1 à n) i(i + 1) en fonction de n. <em>(indication : développer, puis utiliser les deux sommes classiques)</em></li>
+<li>Démontrer par récurrence que pour tout n ≥ 1, Σ (i = 1 à n) 1/(i(i+1)) = n/(n+1).</li>
+</ol>
+
+<h4>Exercice 3 — Binôme (3 points)</h4>
+<ol>
+<li>Développer (1 + i)<sup>6</sup> à l'aide du binôme de Newton.</li>
+<li>Retrouver ce résultat par la forme exponentielle.</li>
+<li>Que peut-on en déduire sur la somme des « i parmi 6 » affectés des puissances de i ?</li>
+</ol>
+
+<h4>Exercice 4 — Complexes (4 points)</h4>
+<p>On pose z₁ = 1 + i√3 et z₂ = 1 + i.</p>
+<ol>
+<li>Mettre z₁ et z₂ sous forme exponentielle.</li>
+<li>Calculer z₁/z₂ sous forme exponentielle, puis sous forme algébrique.</li>
+<li>En déduire les valeurs exactes de cos(π/12) et sin(π/12).</li>
+</ol>
+
+<h4>Problème — Les racines cubiques de l'unité (5 points)</h4>
+<p>On pose j = e<sup>2iπ/3</sup>.</p>
+<ol>
+<li>Donner la forme algébrique de j.</li>
+<li>Montrer que j³ = 1, puis que 1 + j + j² = 0.</li>
+<li>Montrer que j² est le conjugué de j.</li>
+<li>Résoudre dans ℂ l'équation z² + z + 1 = 0 et faire le lien avec la question 2.</li>
+<li>Soit n un entier naturel. Montrer que 1 + j<sup>n</sup> + j<sup>2n</sup> vaut 3 si n est multiple de 3, et 0 sinon.</li>
+</ol>`,
+retenir:"Un problème guidé se traite dans l'ordre : la question k sert presque toujours à la question k+1. Si tu bloques sur une question, admets son résultat et continue — les points suivants restent accessibles.",
+exos:[
+{q:"Corrigé de l'exercice 1 (4 points)",r:"1) Faux. Contre-exemple : x = -3 et y = 1 vérifient x ≤ y mais 9 > 1. C'est vrai seulement si x et y sont positifs. — 2) Vrai. Sa partie réelle est nulle, ce qui est la définition. Il est d'ailleurs à la fois réel et imaginaire pur. — 3) Faux. L'inégalité triangulaire donne ≤, avec égalité seulement si les deux nombres ont le même argument. Contre-exemple : z = 1 et z' = -1 donnent 0 d'un côté et 2 de l'autre. — 4) Vrai. Par contraposée : si n n'est pas divisible par 3, il s'écrit 3k+1 ou 3k+2, et dans les deux cas n² laisse un reste de 1 dans la division par 3."},
+{q:"Corrigé de l'exercice 2 (4 points)",r:"1) i(i+1) = i² + i, donc la somme vaut n(n+1)(2n+1)/6 + n(n+1)/2. On factorise par n(n+1)/6 : n(n+1)[(2n+1) + 3]/6 = n(n+1)(2n+4)/6 = n(n+1)(n+2)/3. — 2) Initialisation n = 1 : le membre de gauche vaut 1/2 et le membre de droite 1/2. Vraie. Hérédité : on suppose la formule au rang n. Alors la somme au rang n+1 vaut n/(n+1) + 1/((n+1)(n+2)) = [n(n+2) + 1]/((n+1)(n+2)) = (n² + 2n + 1)/((n+1)(n+2)) = (n+1)²/((n+1)(n+2)) = (n+1)/(n+2). C'est bien la formule au rang n+1. Conclusion pour tout n ≥ 1."},
+{q:"Corrigé de l'exercice 3 (3 points)",r:"1) Les coefficients de la ligne 6 sont 1, 6, 15, 20, 15, 6, 1 et les puissances de i valent 1, i, -1, -i, 1, i, -1. On obtient 1 + 6i - 15 - 20i + 15 + 6i - 1 = 0 - 8i = -8i. — 2) 1 + i = √2 e^(iπ/4), donc (1+i)⁶ = (√2)⁶ e^(i6π/4) = 8 e^(i3π/2) = -8i. Les deux méthodes concordent. — 3) On en déduit que Σ (k = 0 à 6) « k parmi 6 » i^k = -8i : la partie réelle du développement est nulle et la partie imaginaire vaut -8. En séparant, 1 - 15 + 15 - 1 = 0 et 6 - 20 + 6 = -8."},
+{q:"Corrigé de l'exercice 4 (4 points)",r:"1) |z₁| = √(1+3) = 2, et z₁ = 2(1/2 + i√3/2) donne l'angle π/3 : z₁ = 2e^(iπ/3). |z₂| = √2 et l'angle est π/4 : z₂ = √2 e^(iπ/4). — 2) Le quotient vaut (2/√2) e^(i(π/3 - π/4)) = √2 e^(iπ/12). Sous forme algébrique, on multiplie haut et bas par le conjugué de z₂ : (1 + i√3)(1 - i)/2 = (1 - i + i√3 + √3)/2 = (1+√3)/2 + i(√3-1)/2. — 3) En identifiant √2(cos(π/12) + i sin(π/12)) avec le résultat précédent : cos(π/12) = (1+√3)/(2√2) = (√6 + √2)/4 et sin(π/12) = (√3-1)/(2√2) = (√6 - √2)/4."},
+{q:"Corrigé du problème (5 points)",r:"1) j = cos(2π/3) + i sin(2π/3) = -1/2 + i√3/2. — 2) j³ = e^(2iπ) = 1. Ensuite, 1 + j + j² est une somme géométrique de raison j ≠ 1 : elle vaut (j³ - 1)/(j - 1) = 0 puisque j³ = 1. — 3) j² = e^(4iπ/3) = e^(-2iπ/3), qui est bien le conjugué de e^(2iπ/3). On peut aussi le vérifier algébriquement : j² = -1/2 - i√3/2. — 4) Δ = 1 - 4 = -3, donc les solutions sont (-1 ± i√3)/2, c'est-à-dire exactement j et j². C'est cohérent avec la question 2 : 1 + j + j² = 0 signifie précisément que j est solution de z² + z + 1 = 0. — 5) Si n = 3k, alors j^n = (j³)^k = 1 et de même j^(2n) = 1, donc la somme vaut 3. Sinon, j^n vaut j ou j² selon le reste de n dans la division par 3, et la somme 1 + j^n + j^(2n) redonne dans les deux cas 1 + j + j², c'est-à-dire 0."}
+]},
+
+{t:"QCM express — 20 questions de cours", obj:["Vérifier ses réflexes en dix minutes","Repérer les définitions mal fixées","Réviser juste avant l'épreuve"], html:`
+<div class="obj"><p>Mode d'emploi</p><ul>
+<li>Réponds mentalement aux vingt questions ci-dessous, puis vérifie une par une.</li>
+<li>Toute question ratée signale un chapitre à relire, pas une erreur d'inattention.</li>
+</ul></div>
+<h4>Chapitre Nombres</h4>
+<ol>
+<li>Combien de termes contient une somme dont l'indice va de n à p ?</li>
+<li>Que vaut 0! ?</li>
+<li>Que se passe-t-il quand on multiplie une inégalité par un nombre négatif ?</li>
+<li>Que vaut « i parmi n » plus « i+1 parmi n » ?</li>
+<li>Quelles sont les trois étapes d'une récurrence ?</li>
+<li>Que vaut la somme de tous les coefficients binomiaux d'une même ligne ?</li>
+<li>Quelle est la différence entre ∈ et ⊂ ?</li>
+<li>Peut-on écrire [3, +∞] ?</li>
+<li>Que vaut Σ (i = 0 à n) i ?</li>
+<li>ℤ est-il un corps ?</li>
+</ol>
+<h4>Chapitre Nombres complexes</h4>
+<ol start="11">
+<li>Quelle est la partie imaginaire de 3 - 7i ?</li>
+<li>Que vaut i⁴ ?</li>
+<li>Comment met-on un quotient de complexes sous forme algébrique ?</li>
+<li>Que vaut z multiplié par son conjugué ?</li>
+<li>Combien un complexe non nul a-t-il de racines carrées ?</li>
+<li>A-t-on le droit d'écrire √(-4) ?</li>
+<li>Que vaut e<sup>iθ</sup> en fonction de cos et sin ?</li>
+<li>Quelle est la formule d'Euler pour le sinus ?</li>
+<li>Que devient l'argument d'un produit ?</li>
+<li>Que représente géométriquement |z - a| ?</li>
+</ol>`,
+retenir:"Ces vingt réponses sont le minimum absolu à connaître sans réfléchir. Si l'une d'elles demande un calcul, c'est qu'elle n'est pas encore acquise.",
+exos:[
+{q:"Réponses 1 à 5",r:"1) p - n + 1 termes. Entre 0 et n il y en a donc n+1. — 2) 0! = 1, par convention, et c'est ce qui rend les formules cohérentes. — 3) Le sens de l'inégalité s'inverse. — 4) « i+1 parmi n+1 », c'est la formule de Pascal. — 5) Initialisation, hérédité, conclusion. Les trois doivent être rédigées."},
+{q:"Réponses 6 à 10",r:"6) 2^n, en appliquant le binôme avec a = b = 1. — 7) ∈ relie un élément à un ensemble, ⊂ relie deux ensembles. — 8) Non : +∞ n'est pas un réel, le crochet doit être ouvert. — 9) n(n+1)/2. — 10) Non : 2 n'y a pas d'inverse. ℚ et ℝ sont des corps, pas ℤ."},
+{q:"Réponses 11 à 15",r:"11) -7, et non -7i : la partie imaginaire est un réel. — 12) i⁴ = 1. Les puissances de i sont cycliques de période 4. — 13) On multiplie numérateur et dénominateur par le conjugué du dénominateur. — 14) |z|², un réel positif. — 15) Exactement deux, opposées l'une de l'autre."},
+{q:"Réponses 16 à 20",r:"16) Non. Le symbole racine est interdit dans ℂ, sauf pour un réel positif, car aucune des deux racines n'est privilégiée. — 17) cos θ + i sin θ. — 18) sin θ = (e^(iθ) - e^(-iθ))/(2i), avec 2i au dénominateur. — 19) La somme des arguments, modulo 2π. — 20) La distance entre le point d'affixe z et le point d'affixe a."}
+]}
+];
 const CALCULUS = {
   code:"EP1.3.1", nom:"Calculus et raisonnement", ects:4, h:"10h CM \u00b7 30h TD",
   resume:"Le socle math\u00e9matique du semestre. Les huit premiers chapitres suivent le polycopi\u00e9 du cours (chapitre Nombres, puis chapitre Nombres complexes), avec un cours simplifi\u00e9 et beaucoup d'exercices corrig\u00e9s ; les suivants couvrent la partie analyse annonc\u00e9e plus tard dans le semestre.",
-  chapitres: [CALCULUS_BASE.chapitres[0]].concat(CH_NOMBRES, CH_COMPLEXES, CALCULUS_BASE.chapitres.slice(1))
+  chapitres: [CALCULUS_BASE.chapitres[0]].concat(CH_NOMBRES, CH_COMPLEXES, CH_EXAMS, CALCULUS_BASE.chapitres.slice(1))
 };
 const AP2 = {code:"EP2.1.1", nom:"Algorithmique et programmation 2 : structures", ects:4, h:"6h CM · 10h TD · 14h TP",
 resume:"La suite directe d'AP1 : au lieu de manipuler des tableaux, on construit ses propres structures de données et on choisit celle qui convient au problème. C'est le cours qui sépare ceux qui savent coder de ceux qui savent concevoir.",
