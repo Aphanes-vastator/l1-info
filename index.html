@@ -886,7 +886,7 @@ exos:[{q:"Pourquoi le parcours colonne par colonne d'une matrice est-il plus len
 retenir:"Le système protège et arbitre. Mode utilisateur pour tes programmes, mode noyau pour le système, appel système pour passer de l'un à l'autre. Les interruptions rendent le multitâche possible.",
 exos:[{q:"Pourquoi un programme utilisateur ne peut-il pas écrire directement sur le disque ?",r:"Parce qu'il s'exécute en mode utilisateur : l'accès matériel est réservé au noyau, qui vérifie les droits avant d'agir."},{q:"Pourquoi printf n'écrit-il pas toujours immédiatement à l'écran ?",r:"La sortie est tamponnée pour limiter le nombre d'appels système. Le tampon est vidé à la fin de la ligne, quand il est plein, ou par fflush."}]}
 ]};
-const CALCULUS = {code:"EP1.3.1", nom:"Calculus et raisonnement", ects:4, h:"10h CM · 30h TD",
+const CALCULUS_BASE = {code:"EP1.3.1", nom:"Calculus et raisonnement", ects:4, h:"10h CM · 30h TD",
 resume:"Le socle mathématique : logique du raisonnement, suites, limites, dérivation, intégration. Beaucoup de choses vues en Terminale, mais reprises avec un niveau d'exigence sur la rédaction et les démonstrations qui est le vrai saut du lycée à la fac.",
 chapitres:[
 {t:"Raisonnement et rédaction mathématique", obj:["Rédiger une démonstration acceptable","Utiliser correctement quantificateurs et implications","Distinguer condition nécessaire et suffisante"], html:`
@@ -1333,6 +1333,591 @@ echo "Sauvegarde terminee"</code></pre>
 retenir:"Des petits outils composés par des tubes valent mieux qu'un gros programme. Redirections pour les fichiers, tubes pour les enchaînements, scripts pour automatiser ce que tu répètes.",
 exos:[{q:"Compte le nombre de fichiers .c d'un répertoire en une ligne.",r:"ls *.c | wc -l — ou find . -name \"*.c\" | wc -l pour inclure les sous-répertoires."},{q:"Que fait cmd > fichier 2>&1 ?",r:"Elle redirige la sortie standard vers le fichier, puis la sortie d'erreur vers la même destination. Tout se retrouve dans le fichier."}]}
 ]};
+const CH_NOMBRES = [
+{t:"Les ensembles de nombres", obj:["Situer ℕ, ℤ, ℚ, ℝ les uns dans les autres","Écrire une fraction sous forme irréductible","Savoir ce qu'un ensemble apporte de plus que le précédent"], html:`
+<h4>La chaîne d'inclusions</h4>
+<p>Chaque ensemble est construit pour résoudre une équation que le précédent ne sait pas résoudre.</p>
+<table><tr><th>Ensemble</th><th>Contenu</th><th>Ce qu'il permet enfin</th></tr>
+<tr><td>ℕ</td><td>0, 1, 2, 3, …</td><td>compter</td></tr>
+<tr><td>ℤ</td><td>…, -2, -1, 0, 1, 2, …</td><td>résoudre x + 3 = 1</td></tr>
+<tr><td>ℚ</td><td>les fractions p/q</td><td>résoudre 2x = 3</td></tr>
+<tr><td>ℝ</td><td>tous les points d'une droite</td><td>résoudre x² = 2</td></tr></table>
+<p>On a donc ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ. Chaque flèche ajoute des nombres, jamais n'en retire.</p>
+<h4>Divisibilité</h4>
+<div class="def"><b>Définition.</b> Pour m et n dans ℤ, on dit que m divise n s'il existe un entier k tel que n = mk.</div>
+<p>n est <strong>pair</strong> si 2 divise n, c'est-à-dire s'il s'écrit n = 2k. Sinon il est <strong>impair</strong> et s'écrit n = 2k + 1. Ces deux écritures sont les outils de la moitié des démonstrations d'arithmétique du semestre.</p>
+<h4>Les rationnels</h4>
+<p>Un rationnel est un nombre de la forme p/q avec p et q entiers et q non nul. C'est l'unique solution de l'équation qx - p = 0.</p>
+<p>La même fraction admet une infinité d'écritures, puisque p/q = np/(nq). On choisit donc toujours la forme <strong>irréductible</strong> : q strictement positif, et p et q sans diviseur commun autre que 1.</p>
+<p><em>Exemple du poly.</em> 4/(-6) désigne le même nombre que -2/3, et c'est cette seconde écriture qui est irréductible.</p>
+<h4>Les réels</h4>
+<p>L'équation x² - 2 = 0 n'a pas de solution rationnelle. On agrandit donc encore, et on obtient ℝ, qui contient √2, mais aussi π, e et ln 2 — tous irrationnels.</p>
+<div class="def"><b>Corps.</b> Dans ℚ comme dans ℝ, on peut additionner, multiplier, et diviser par tout élément non nul. On note ℚ* et ℝ* ces ensembles privés de 0.</div>
+<div class="piege"><b>Attention.</b> ℤ n'est pas un corps : 2 n'y a pas d'inverse, puisque 1/2 n'est pas entier. C'est exactement la raison d'être de ℚ.</div>`,
+retenir:"ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ, et chaque étape existe pour résoudre une équation de plus. Pair = 2k, impair = 2k+1 : ces deux écritures servent partout. Une fraction se met toujours sous forme irréductible.",
+exos:[
+{q:"Mets 126/98 sous forme irréductible.",r:"126 = 2×63 = 2×9×7 et 98 = 2×49 = 2×7×7. On simplifie par 14 : 126/98 = 9/7."},
+{q:"Mets 15/(-25) sous forme irréductible.",r:"On remonte le signe au numérateur et on simplifie par 5 : -3/5."},
+{q:"Montre que la somme de deux nombres pairs est paire.",r:"Soient n = 2k et m = 2k'. Alors n + m = 2k + 2k' = 2(k + k'), qui est de la forme 2 fois un entier, donc pair."},
+{q:"Montre que le produit de deux nombres impairs est impair.",r:"Soient n = 2k+1 et m = 2k'+1. Alors nm = 4kk' + 2k + 2k' + 1 = 2(2kk' + k + k') + 1, de la forme 2K+1, donc impair."},
+{q:"Montre que si n est impair alors n² est impair.",r:"n = 2k+1 donne n² = 4k² + 4k + 1 = 2(2k² + 2k) + 1, donc impair. C'est la contraposée de « si n² est pair alors n est pair »."},
+{q:"√2 est-il rationnel ? Donne l'idée de la preuve.",r:"Non. Par l'absurde : si √2 = p/q irréductible, alors p² = 2q², donc p² est pair, donc p est pair (exercice précédent), donc p = 2k et 4k² = 2q², d'où q² = 2k² et q est pair aussi. Contradiction avec l'irréductibilité."},
+{q:"3 divise-t-il -12 ? Et -12 divise-t-il 3 ?",r:"Oui pour le premier : -12 = 3 × (-4). Non pour le second : il n'existe pas d'entier k tel que 3 = -12k."},
+{q:"Le nombre 0,25 est-il rationnel ? Et 0,333… ?",r:"Oui pour les deux : 0,25 = 1/4 et 0,333… = 1/3. Tout nombre décimal ou à développement périodique est rationnel."}
+]},
+
+{t:"Puissances et identités remarquables", obj:["Appliquer les règles de calcul sur les puissances","Manipuler les exposants négatifs et rationnels","Reconnaître une identité remarquable"], html:`
+<h4>Définition</h4>
+<p>Pour x réel et n entier strictement positif, x<sup>n</sup> est le produit de n facteurs égaux à x. Pour x non nul on pose ensuite</p>
+<p style="text-align:center">x<sup>-n</sup> = 1 / x<sup>n</sup> &nbsp;&nbsp;et&nbsp;&nbsp; x<sup>0</sup> = 1.</p>
+<p>La convention x<sup>0</sup> = 1 n'est pas arbitraire : c'est la seule qui rende la règle suivante valable pour tous les exposants.</p>
+<h4>Les quatre règles</h4>
+<ul>
+<li>x<sup>n+m</sup> = x<sup>n</sup> × x<sup>m</sup></li>
+<li>x<sup>nm</sup> = (x<sup>n</sup>)<sup>m</sup></li>
+<li>(xy)<sup>n</sup> = x<sup>n</sup> y<sup>n</sup></li>
+<li>(x/y)<sup>n</sup> = x<sup>n</sup> / y<sup>n</sup></li>
+</ul>
+<div class="piege"><b>Le piège classique.</b> Il n'existe aucune règle pour (x + y)<sup>n</sup>. En particulier (a+b)² n'est pas a² + b². C'est l'erreur la plus fréquente de tout le semestre.</div>
+<h4>Identités remarquables</h4>
+<p>(a + b)² = a² + 2ab + b²<br>
+(a - b)² = a² - 2ab + b²<br>
+a² - b² = (a - b)(a + b)</p>
+<p>La troisième sert surtout dans l'autre sens, pour <strong>factoriser</strong> : dès que tu vois une différence de deux carrés, tu peux couper en deux facteurs.</p>
+<h4>Racines n-ièmes</h4>
+<p>Pour tout réel positif x et tout entier n non nul, il existe un unique réel positif y tel que x = y<sup>n</sup>. On le note y = <sup>n</sup>√x = x<sup>1/n</sup>. Cela étend les puissances aux exposants rationnels, et les quatre règles restent valables.</p>
+<div class="piege"><b>Positivité obligatoire.</b> Cette définition ne vaut que pour x positif. C'est précisément ce blocage qui motivera l'introduction des nombres complexes au chapitre suivant.</div>
+<h4>Exemple guidé</h4>
+<p>Simplifier (2<sup>3</sup> × 2<sup>-5</sup>) / 2<sup>-4</sup>.<br>
+Au numérateur : 2<sup>3-5</sup> = 2<sup>-2</sup>. Puis diviser par 2<sup>-4</sup> revient à multiplier par 2<sup>4</sup> : 2<sup>-2+4</sup> = 2² = 4.</p>`,
+retenir:"On additionne les exposants pour un produit, on les multiplie pour une puissance de puissance. Aucune règle pour une somme : (a+b)² se développe. Une différence de carrés se factorise toujours.",
+exos:[
+{q:"Simplifie (3⁴ × 3⁻²) / 3³.",r:"3^(4-2-3) = 3^(-1) = 1/3."},
+{q:"Développe (2x - 3)².",r:"4x² - 12x + 9. Attention au double produit et au signe."},
+{q:"Factorise 9x² - 25.",r:"Différence de carrés : (3x - 5)(3x + 5)."},
+{q:"Factorise x² - 7.",r:"(x - √7)(x + √7). L'identité marche aussi avec des racines."},
+{q:"Simplifie (x²y³)³ / (xy)⁴ pour x et y non nuls.",r:"Numérateur : x⁶y⁹. Dénominateur : x⁴y⁴. Quotient : x²y⁵."},
+{q:"Que vaut (-2)⁴ et -2⁴ ?",r:"(-2)⁴ = 16 car la parenthèse élève le nombre négatif. -2⁴ = -16 car la puissance s'applique avant le signe."},
+{q:"Écris √8 sous la forme a√2.",r:"√8 = √(4×2) = 2√2."},
+{q:"Simplifie (a + b)² - (a - b)².",r:"En développant : 4ab. On peut aussi voir une différence de carrés : [(a+b)-(a-b)][(a+b)+(a-b)] = 2b × 2a."},
+{q:"Que vaut 16^(3/4) ?",r:"16^(1/4) = 2, puis 2³ = 8."}
+]},
+
+{t:"Ordre sur ℝ et intervalles", obj:["Utiliser les règles de manipulation des inégalités","Écrire un intervalle en compréhension","Repérer le piège de la multiplication par un négatif"], html:`
+<h4>La relation d'ordre</h4>
+<p>ℝ est muni de la relation ≤, qui vérifie trois propriétés :</p>
+<ul>
+<li><strong>Réflexivité</strong> : x ≤ x.</li>
+<li><strong>Antisymétrie</strong> : si x ≤ y et y ≤ x, alors x = y.</li>
+<li><strong>Transitivité</strong> : si x ≤ y et y ≤ z, alors x ≤ z.</li>
+</ul>
+<p>Ce sont exactement les trois axiomes d'une relation d'ordre vus en Logique pour l'informatique. On écrit x &lt; y lorsque x ≤ y et x ≠ y.</p>
+<h4>Les trois règles à retenir</h4>
+<p>Ce sont celles du haut de la page 3 de ton poly :</p>
+<ul>
+<li>Si x ≤ y et z ≤ t, alors x + z ≤ y + t. <em>(on additionne deux inégalités de même sens)</em></li>
+<li>Si x ≤ y et 0 ≤ z, alors xz ≤ yz. <em>(multiplier par un positif conserve le sens)</em></li>
+<li>Si x ≤ y et z ≤ 0, alors xz ≥ yz. <em>(multiplier par un négatif renverse le sens)</em></li>
+</ul>
+<div class="piege"><b>Les deux fautes mortelles.</b> On ne soustrait jamais deux inégalités membre à membre. Et on n'oublie jamais de renverser le sens en multipliant ou divisant par un nombre négatif — donc jamais par une lettre dont on ne connaît pas le signe.</div>
+<h4>Intervalles</h4>
+<div class="def"><b>Définition 2.1 du poly.</b> Pour a et b réels, [a, b] = { x ∈ ℝ | a ≤ x ≤ b }.</div>
+<p>En remplaçant ≤ par &lt; d'un côté ou de l'autre, on obtient [a, b[, ]a, b] et ]a, b[. Le crochet tourné vers l'extérieur signifie que la borne est exclue.</p>
+<p>Intervalles infinis : [a, +∞[ = { x ∈ ℝ | a ≤ x }, et de même ]a, +∞[, ]-∞, b] et ]-∞, b[. Enfin ℝ = ]-∞, +∞[.</p>
+<div class="piege"><b>Toujours ouvert du côté de l'infini.</b> Écrire [a, +∞] est faux : +∞ n'est pas un réel, il ne peut pas être atteint.</div>
+<h4>Exemple guidé</h4>
+<p>Résoudre -3x + 2 ≤ 8.<br>
+On retranche 2 : -3x ≤ 6. On divise par -3, qui est négatif, donc on <strong>renverse</strong> : x ≥ -2. L'ensemble des solutions est [-2, +∞[.</p>`,
+retenir:"Multiplier par un négatif renverse l'inégalité. On additionne deux inégalités de même sens, on ne les soustrait jamais. Crochet vers l'extérieur = borne exclue, et l'infini est toujours exclu.",
+exos:[
+{q:"Résous 2x - 5 < 1 et donne le résultat en intervalle.",r:"2x < 6, donc x < 3. Solutions : ]-∞, 3[."},
+{q:"Résous -4x + 1 ≥ 9.",r:"-4x ≥ 8, puis division par -4 avec renversement : x ≤ -2. Solutions : ]-∞, -2]."},
+{q:"Écris en compréhension l'intervalle ]-1, 4].",r:"{ x ∈ ℝ | -1 < x ≤ 4 }."},
+{q:"Si 2 ≤ x ≤ 5 et 1 ≤ y ≤ 3, encadre x + y.",r:"On additionne les inégalités de même sens : 3 ≤ x + y ≤ 8."},
+{q:"Avec les mêmes hypothèses, encadre x - y.",r:"On ne soustrait pas les inégalités. On encadre d'abord -y : -3 ≤ -y ≤ -1. Puis on additionne : -1 ≤ x - y ≤ 4."},
+{q:"Si 2 ≤ x ≤ 5, encadre -3x.",r:"On multiplie par -3 en renversant : -15 ≤ -3x ≤ -6."},
+{q:"Peut-on déduire de x ≤ y que x² ≤ y² ?",r:"Non. Avec x = -3 et y = 1 on a x ≤ y mais x² = 9 > 1 = y². C'est vrai seulement si x et y sont tous deux positifs."},
+{q:"Résous (x - 1)(x + 2) > 0 par un tableau de signes.",r:"Les racines sont 1 et -2. Le produit est positif à l'extérieur des racines : ]-∞, -2[ ∪ ]1, +∞[."},
+{q:"Résous 1/x < 2 en discutant le signe de x.",r:"Si x > 0 : on multiplie par x sans renverser, 1 < 2x, donc x > 1/2. Si x < 0 : 1/x est négatif donc l'inégalité est toujours vraie. Solutions : ]-∞, 0[ ∪ ]1/2, +∞[."}
+]},
+
+{t:"Le symbole somme Σ", obj:["Lire et écrire une somme indexée","Comprendre la variable muette","Utiliser les trois sommes classiques"], html:`
+<h4>Ce que ça veut dire</h4>
+<p>Si pour chaque entier i entre n et p on dispose d'un réel x<sub>i</sub>, la notation Σ (de i = n à p) x<sub>i</sub> désigne la somme</p>
+<p style="text-align:center">x<sub>n</sub> + x<sub>n+1</sub> + … + x<sub>p</sub></p>
+<p>C'est une simple abréviation. En informatique, c'est exactement une boucle <code>for</code> qui accumule dans une variable.</p>
+<pre><code>int s = 0;
+for (int i = n; i &lt;= p; i++) s = s + x[i];</code></pre>
+<h4>Variable muette</h4>
+<div class="def"><b>Point important du poly.</b> La lettre i n'a aucune signification propre : elle peut être remplacée par n'importe quelle autre. Σ(i=n à p) x<sub>i</sub> = Σ(k=n à p) x<sub>k</sub>.</div>
+<p>C'est la même idée que le nom d'une variable locale dans une fonction : il ne sort pas de la boucle.</p>
+<h4>Les trois sommes classiques</h4>
+<ul>
+<li><strong>Somme des entiers</strong> : Σ (i = 0 à n) i = n(n+1)/2.</li>
+<li><strong>Somme géométrique</strong> : pour q ≠ 1, Σ (i = 0 à n) q<sup>i</sup> = (q<sup>n+1</sup> - 1)/(q - 1).</li>
+<li><strong>Binôme de Newton</strong> : traité au chapitre suivant.</li>
+</ul>
+<h4>Règles de manipulation</h4>
+<ul>
+<li>Linéarité : une constante sort de la somme, et la somme d'une somme se sépare.</li>
+<li>Σ (i = 0 à n) c = (n + 1) × c : attention, il y a n+1 termes et non n.</li>
+<li>Changement d'indice : poser j = i + 1 décale les bornes. C'est la manipulation clé de la preuve du binôme dans ton poly.</li>
+</ul>
+<h4>Exemple guidé</h4>
+<p>Calculer Σ (i = 1 à 10) (2i + 3).<br>
+On sépare : 2 Σ i + Σ 3. La première somme va de 1 à 10 et vaut 10×11/2 = 55, donc 2×55 = 110. La seconde compte 10 termes égaux à 3, soit 30. Total : 140.</p>
+<div class="piege"><b>Compter les termes.</b> D'un indice n à un indice p, il y a p - n + 1 termes. De 0 à n, il y en a n+1, pas n.</div>`,
+retenir:"Σ est une boucle. L'indice est muet. Somme des entiers : n(n+1)/2. Somme géométrique : (q^(n+1) - 1)/(q - 1). Et il y a p - n + 1 termes entre les bornes n et p.",
+exos:[
+{q:"Écris en toutes lettres Σ (i = 2 à 5) i².",r:"4 + 9 + 16 + 25 = 54."},
+{q:"Combien de termes dans Σ (i = 3 à 17) x_i ?",r:"17 - 3 + 1 = 15 termes."},
+{q:"Calcule la somme des entiers de 1 à 100.",r:"100 × 101 / 2 = 5050."},
+{q:"Calcule Σ (i = 0 à 5) 2^i.",r:"Somme géométrique de raison 2 : (2⁶ - 1)/(2 - 1) = 63."},
+{q:"Calcule Σ (i = 1 à n) (3i - 1) en fonction de n.",r:"3 Σi - Σ1 = 3n(n+1)/2 - n = (3n² + 3n - 2n)/2 = (3n² + n)/2 = n(3n+1)/2."},
+{q:"Calcule la somme des entiers de 10 à 50.",r:"Somme de 1 à 50 moins somme de 1 à 9 : 1275 - 45 = 1230."},
+{q:"Écris Σ (i = 1 à n) x_i en fonction d'une somme d'indice j partant de 0.",r:"En posant j = i - 1 : Σ (j = 0 à n-1) x_(j+1). Les bornes se décalent en sens inverse de l'indice."},
+{q:"Que vaut Σ (i = 0 à n) 1 ?",r:"n + 1, car chaque terme vaut 1 et il y a n+1 termes."},
+{q:"Calcule Σ (i = 0 à 4) (1/2)^i.",r:"(q^5 - 1)/(q - 1) avec q = 1/2, soit (1/32 - 1)/(-1/2) = 31/16."},
+{q:"Écris le code C qui calcule Σ (i = 1 à n) i² sans formule.",r:"int s = 0; for (int i = 1; i <= n; i++) s += i*i; — la borne i <= n reproduit exactement l'indice supérieur du symbole somme."}
+]},
+
+{t:"Factorielle et coefficients binomiaux", obj:["Calculer une factorielle et un coefficient binomial","Utiliser la symétrie et la formule de Pascal","Interpréter en dénombrement"], html:`
+<h4>Factorielle</h4>
+<div class="def"><b>Définition.</b> n! = 1 × 2 × … × n, avec la convention 0! = 1.</div>
+<p>Valeurs à connaître : 1! = 1, 2! = 2, 3! = 6, 4! = 24, 5! = 120. La croissance est brutale : 20! dépasse déjà 10<sup>18</sup>.</p>
+<p>n! compte le nombre de façons d'ordonner n objets distincts. C'est aussi le nombre de permutations possibles d'un tableau, donc le nombre d'ordres qu'un algorithme de tri doit pouvoir distinguer.</p>
+<h4>Coefficient binomial</h4>
+<div class="def"><b>Définition du poly.</b> Pour 0 ≤ i ≤ n, le coefficient binomial « i parmi n » vaut n! / (i! (n - i)!).</div>
+<p>Il compte le nombre de façons de choisir i éléments parmi n <strong>sans tenir compte de l'ordre</strong>.</p>
+<h4>Propriétés</h4>
+<ul>
+<li><strong>Bords</strong> : « 0 parmi n » = « n parmi n » = 1.</li>
+<li><strong>Symétrie</strong> : « i parmi n » = « n - i parmi n ». Choisir i éléments, c'est en rejeter n - i.</li>
+<li><strong>Formule de Pascal</strong> : « i parmi n » + « i+1 parmi n » = « i+1 parmi n+1 ».</li>
+</ul>
+<h4>La formule de Pascal, démontrée</h4>
+<p>C'est le calcul de la page 4 de ton poly. On met les deux fractions au même dénominateur (i+1)!(n-i-1)! :</p>
+<p>n!/(i!(n-i)!) + n!/((i+1)!(n-i-1)!) = n!/((i+1)!(n-i)!) × [(i+1) + (n-i)] = n!(n+1)/((i+1)!(n-i)!) = (n+1)!/((i+1)!(n-i)!)</p>
+<p>et c'est bien « i+1 parmi n+1 ». Retiens surtout la technique : mettre au même dénominateur puis factoriser.</p>
+<h4>Triangle de Pascal</h4>
+<p>Chaque coefficient est la somme des deux du dessus. C'est la traduction directe de la formule, et c'est le moyen le plus rapide de calculer à la main :</p>
+<pre><code>n=0        1
+n=1       1 1
+n=2      1 2 1
+n=3     1 3 3 1
+n=4    1 4 6 4 1
+n=5   1 5 10 10 5 1</code></pre>`,
+retenir:"n! ordonne, le coefficient binomial choisit sans ordre. Symétrie entre i et n-i, formule de Pascal pour construire le triangle ligne par ligne. Et 0! = 1.",
+exos:[
+{q:"Calcule 6!.",r:"720."},
+{q:"Calcule « 2 parmi 5 ».",r:"5!/(2!3!) = 120/12 = 10."},
+{q:"Calcule « 4 parmi 6 » en utilisant la symétrie.",r:"C'est « 2 parmi 6 » = 6!/(2!4!) = 15. Bien plus rapide que le calcul direct."},
+{q:"Simplifie (n+1)!/n!.",r:"n+1. Tous les autres facteurs se simplifient."},
+{q:"Simplifie n!/(n-2)!.",r:"n(n-1)."},
+{q:"Écris la ligne n = 6 du triangle de Pascal.",r:"1, 6, 15, 20, 15, 6, 1 — chaque terme est la somme des deux au-dessus dans la ligne n = 5."},
+{q:"Combien de façons de choisir 3 délégués parmi 25 étudiants ?",r:"« 3 parmi 25 » = 25×24×23 / 6 = 2300."},
+{q:"Combien de mains de 5 cartes dans un jeu de 32 ?",r:"« 5 parmi 32 » = 201 376. L'ordre de réception ne compte pas, donc c'est bien un coefficient binomial."},
+{q:"Vérifie la formule de Pascal avec n = 4 et i = 1.",r:"« 1 parmi 4 » + « 2 parmi 4 » = 4 + 6 = 10, et « 2 parmi 5 » = 10. C'est bien égal."},
+{q:"Pourquoi « n parmi n » vaut-il 1 ?",r:"n!/(n!0!) = 1, avec la convention 0! = 1. Il n'y a qu'une façon de choisir tout l'ensemble."}
+]},
+
+{t:"Binôme de Newton et récurrence", obj:["Développer une puissance de somme","Rédiger une démonstration par récurrence","Suivre la preuve du binôme du poly"], html:`
+<h4>La formule</h4>
+<div class="def"><b>Binôme de Newton.</b> Pour a et b réels et n entier, (a + b)<sup>n</sup> = Σ (i = 0 à n) « i parmi n » a<sup>i</sup> b<sup>n-i</sup>.</div>
+<p>Les coefficients sont exactement la ligne n du triangle de Pascal. Pour n = 2, on retrouve a² + 2ab + b² : l'identité remarquable n'est qu'un cas particulier.</p>
+<p>Exemple avec n = 3 : (a+b)³ = b³ + 3ab² + 3a²b + a³.</p>
+<h4>Le schéma de récurrence</h4>
+<p>Pour montrer qu'une propriété P(n) est vraie pour tout n, trois étapes, toujours rédigées :</p>
+<ol>
+<li><strong>Initialisation</strong> : on vérifie P au premier rang.</li>
+<li><strong>Hérédité</strong> : on suppose P(n) vraie pour un n fixé, et on démontre P(n+1).</li>
+<li><strong>Conclusion</strong> : la propriété est vraie pour tout n.</li>
+</ol>
+<div class="piege"><b>Sans initialisation, rien n'est prouvé.</b> La propriété « n = n+1 » est héréditaire et pourtant fausse partout. L'hérédité seule ne fait que propager, elle ne démarre pas.</div>
+<h4>La preuve du binôme, étape par étape</h4>
+<p>C'est le calcul de la page 4 de ton poly. On note (P<sub>n</sub>) la formule.</p>
+<p><strong>Initialisation.</strong> Pour n = 1, la somme vaut a + b : (P<sub>1</sub>) est vraie.</p>
+<p><strong>Hérédité.</strong> On suppose (P<sub>n</sub>) et on écrit (a+b)<sup>n+1</sup> = (a+b)(a+b)<sup>n</sup>. On distribue, ce qui donne deux sommes : l'une avec a<sup>i+1</sup>b<sup>n-i</sup>, l'autre avec a<sup>i</sup>b<sup>n+1-i</sup>.</p>
+<p>Dans la première, on fait le <strong>changement d'indice</strong> j = i + 1 pour que les deux sommes portent sur la même puissance de a. On sort ensuite les termes extrêmes b<sup>n+1</sup> et a<sup>n+1</sup>, on regroupe le reste, et la <strong>formule de Pascal</strong> fusionne les deux coefficients en un seul. On reconnaît (P<sub>n+1</sub>).</p>
+<p>Les deux seules astuces sont donc : décaler un indice, et appliquer Pascal. Si tu retiens ces deux gestes, tu peux refaire la preuve.</p>
+<h4>Remarque</h4>
+<p>Ton poly annonce qu'on reviendra sur la récurrence dans un chapitre ultérieur. Elle réapparaîtra aussi en Logique pour l'informatique, et sous forme d'induction structurelle en algorithmique.</p>`,
+retenir:"(a+b)^n se développe avec la ligne n du triangle de Pascal. Une récurrence se rédige en trois étapes explicites. Dans la preuve du binôme, tout tient au changement d'indice puis à la formule de Pascal.",
+exos:[
+{q:"Développe (a + b)⁴.",r:"a⁴ + 4a³b + 6a²b² + 4ab³ + b⁴, avec les coefficients 1, 4, 6, 4, 1."},
+{q:"Développe (x + 2)³.",r:"x³ + 3x²(2) + 3x(4) + 8 = x³ + 6x² + 12x + 8."},
+{q:"Développe (x - 1)⁴.",r:"On applique le binôme avec b = -1 : x⁴ - 4x³ + 6x² - 4x + 1. Les signes alternent."},
+{q:"Quel est le coefficient de x³ dans (x + 3)⁵ ?",r:"« 3 parmi 5 » × 3² = 10 × 9 = 90."},
+{q:"Que vaut Σ (i = 0 à n) « i parmi n » ?",r:"2^n. Il suffit d'appliquer le binôme avec a = b = 1."},
+{q:"Que vaut Σ (i = 0 à n) (-1)^i « i parmi n » pour n ≥ 1 ?",r:"0. On applique le binôme avec a = -1 et b = 1, ce qui donne (1 - 1)^n = 0."},
+{q:"Prouve par récurrence que la somme des entiers de 0 à n vaut n(n+1)/2.",r:"Initialisation n = 0 : la somme vaut 0 et la formule donne 0. Hérédité : si la somme jusqu'à n vaut n(n+1)/2, ajouter n+1 donne n(n+1)/2 + (n+1) = (n+1)(n+2)/2, qui est la formule au rang n+1. Conclusion pour tout n."},
+{q:"Prouve par récurrence que 2^n ≥ n + 1 pour tout n ≥ 0.",r:"Initialisation : 2⁰ = 1 ≥ 1. Hérédité : si 2^n ≥ n+1 alors 2^(n+1) = 2 × 2^n ≥ 2(n+1) = 2n + 2 ≥ n + 2. Conclusion."},
+{q:"Prouve par récurrence que 3 divise 4^n - 1.",r:"Initialisation : 4⁰ - 1 = 0, divisible par 3. Hérédité : 4^(n+1) - 1 = 4(4^n - 1) + 3. Le premier terme est divisible par 3 par hypothèse, le second aussi, donc la somme l'est."},
+{q:"Où est l'erreur : « P(n) est héréditaire donc P(n) est vraie pour tout n » ?",r:"Il manque l'initialisation. Sans un rang de départ vérifié, l'hérédité ne propage rien."}
+]},
+
+{t:"Ensembles : premières notions", obj:["Décrire un ensemble en extension ou en compréhension","Utiliser le symbole d'appartenance","Manipuler union, intersection, inclusion"], html:`
+<h4>Ce qu'est un ensemble</h4>
+<p>Ton poly le dit simplement : un ensemble est une collection d'objets tous différents. Il n'y a ni ordre ni répétition.</p>
+<h4>Deux façons de décrire</h4>
+<ul>
+<li><strong>En extension</strong>, entre accolades, en listant les éléments : ℕ = {0, 1, 2, 3, 4, 5, …}.</li>
+<li><strong>En compréhension</strong>, par une propriété : { x | x vérifie certaines propriétés }. Par exemple { n ∈ ℕ | n est pair }.</li>
+</ul>
+<p>La barre verticale se lit « tel que ». C'est la même construction que les intervalles vus plus haut : [a, b] = { x ∈ ℝ | a ≤ x ≤ b }.</p>
+<h4>Appartenance</h4>
+<div class="def"><b>Symbole ∈.</b> La phrase x ∈ A signifie que x est un élément de l'ensemble A. Sa négation se note x ∉ A.</div>
+<div class="piege"><b>Ne pas confondre ∈ et ⊂.</b> ∈ relie un élément à un ensemble, ⊂ relie deux ensembles. On écrit 2 ∈ ℕ et ℕ ⊂ ℤ, jamais l'inverse.</div>
+<h4>Opérations</h4>
+<ul>
+<li><strong>Union</strong> A ∪ B : les éléments qui sont dans A <em>ou</em> dans B (ou dans les deux).</li>
+<li><strong>Intersection</strong> A ∩ B : ceux qui sont dans A <em>et</em> dans B.</li>
+<li><strong>Différence</strong> A \\ B : ceux de A qui ne sont pas dans B.</li>
+<li><strong>Inclusion</strong> A ⊂ B : tout élément de A est aussi dans B.</li>
+</ul>
+<p>Le parallèle avec la logique est exact : union et « ou », intersection et « et », complémentaire et négation. Les lois de De Morgan s'écrivent donc aussi bien sur les ensembles.</p>
+<h4>Ensemble vide et cardinal</h4>
+<p>L'ensemble vide, sans aucun élément, est inclus dans tout ensemble. Le cardinal d'un ensemble fini est son nombre d'éléments. Pour deux ensembles finis, le cardinal de l'union vaut la somme des cardinaux moins celui de l'intersection.</p>
+<div class="def"><b>Remarque.</b> Ton poly annonce qu'on reviendra plus tard sur les rudiments de théorie des ensembles. Le cours de Logique pour l'informatique traite ces notions en détail, relations et applications comprises.</div>`,
+retenir:"En extension on liste, en compréhension on décrit par une propriété. ∈ pour un élément, ⊂ pour un ensemble. Union = ou, intersection = et : c'est la logique traduite en ensembles.",
+exos:[
+{q:"Décris en compréhension l'ensemble {0, 2, 4, 6, 8, …}.",r:"{ n ∈ ℕ | n est pair }, ou encore { 2k | k ∈ ℕ }."},
+{q:"Décris en extension { n ∈ ℕ | n² < 20 }.",r:"{0, 1, 2, 3, 4}, car 4² = 16 < 20 mais 5² = 25 > 20."},
+{q:"Vrai ou faux : 3 ⊂ ℕ.",r:"Faux. 3 est un élément, pas un ensemble : il faut écrire 3 ∈ ℕ."},
+{q:"Vrai ou faux : {3} ⊂ ℕ.",r:"Vrai. {3} est bien un ensemble, et son unique élément appartient à ℕ."},
+{q:"Avec A = {1,2,3,4} et B = {3,4,5}, donne A ∪ B, A ∩ B et A \\ B.",r:"A ∪ B = {1,2,3,4,5} ; A ∩ B = {3,4} ; A \\ B = {1,2}."},
+{q:"Vérifie la formule des cardinaux sur l'exemple précédent.",r:"|A| + |B| - |A ∩ B| = 4 + 3 - 2 = 5, ce qui est bien le cardinal de l'union."},
+{q:"Décris [2, 5[ en compréhension.",r:"{ x ∈ ℝ | 2 ≤ x < 5 }."},
+{q:"Que vaut [0, 3] ∩ [2, 7] ?",r:"[2, 3] : les réels qui sont à la fois dans les deux intervalles."},
+{q:"Que vaut ℚ ∩ ℤ ?",r:"ℤ, puisque ℤ est inclus dans ℚ. L'intersection avec un sur-ensemble redonne l'ensemble de départ."},
+{q:"Combien de sous-ensembles a l'ensemble {a, b, c} ?",r:"2³ = 8, y compris l'ensemble vide et l'ensemble entier."}
+]}
+];
+const CH_COMPLEXES = [
+{t:"Angles et cercle trigonométrique", obj:["Convertir degrés et radians","Placer un point sur le cercle trigonométrique","Retrouver les valeurs classiques de cos et sin"], html:`
+<h4>Mesure d'un angle</h4>
+<p>Un angle se mesure en degrés ou en <strong>radians</strong>, l'unité préférée en mathématiques. Le radian mesure directement la longueur de l'arc sur un cercle de rayon 1 : un tour complet vaut 2π radians, soit 360 degrés.</p>
+<p>Conversion : angle en radians = angle en degrés × π / 180.</p>
+<h4>Angle orienté</h4>
+<p>Un angle porte un signe. Le sens positif, dit <strong>sens trigonométrique</strong>, est le sens inverse des aiguilles d'une montre. C'est pourquoi l'angle AMB et l'angle BMA sont opposés : on les parcourt en sens contraires.</p>
+<h4>Le cercle trigonométrique</h4>
+<p>Dans un repère cartésien, c'est le cercle de centre O et de rayon 1. Le point A de coordonnées (1, 0) sert de référence. Pour un point M du cercle de coordonnées (x, y), on note α la mesure en radians de l'angle AOM, et l'on définit :</p>
+<div class="def"><b>Définitions.</b> cos(α) = x, l'abscisse de M. &nbsp; sin(α) = y, l'ordonnée de M.</div>
+<p>Le cosinus est donc horizontal, le sinus vertical. C'est le seul moyen fiable de ne jamais les confondre.</p>
+<h4>Les valeurs à connaître par cœur</h4>
+<table><tr><th>degrés</th><td>0</td><td>30</td><td>45</td><td>60</td><td>90</td><td>180</td></tr>
+<tr><th>radians</th><td>0</td><td>π/6</td><td>π/4</td><td>π/3</td><td>π/2</td><td>π</td></tr>
+<tr><th>cos</th><td>1</td><td>√3/2</td><td>√2/2</td><td>1/2</td><td>0</td><td>-1</td></tr>
+<tr><th>sin</th><td>0</td><td>1/2</td><td>√2/2</td><td>√3/2</td><td>1</td><td>0</td></tr></table>
+<p>Astuce de mémorisation : pour les sinus de 0, 30, 45, 60, 90 degrés, écris √0/2, √1/2, √2/2, √3/2, √4/2. Les cosinus sont la même liste à l'envers.</p>
+<h4>Lien avec le triangle rectangle</h4>
+<p>En projetant M sur l'axe des abscisses en M', le triangle OMM' est rectangle en M' et d'hypoténuse OM. On retrouve alors les formules du collège : le cosinus est le rapport du côté adjacent sur l'hypoténuse, le sinus celui du côté opposé sur l'hypoténuse.</p>`,
+retenir:"Cosinus en abscisse, sinus en ordonnée, sur un cercle de rayon 1. Un tour = 2π. Les valeurs de 0, π/6, π/4, π/3, π/2 doivent être immédiates.",
+exos:[
+{q:"Convertis 135 degrés en radians.",r:"135 × π/180 = 3π/4."},
+{q:"Convertis 5π/6 en degrés.",r:"5π/6 × 180/π = 150 degrés."},
+{q:"Que vaut cos(π/3) ?",r:"1/2. Ne pas confondre avec sin(π/3) = √3/2."},
+{q:"Que vaut sin(π) ?",r:"0. Le point est en (-1, 0), donc d'ordonnée nulle."},
+{q:"Que vaut cos(3π/2) ?",r:"0. Le point est en (0, -1), donc d'abscisse nulle et d'ordonnée -1."},
+{q:"Dans quel quadrant se trouve un angle de 2π/3 ? Quels sont les signes de cos et sin ?",r:"Deuxième quadrant : cosinus négatif, sinus positif."},
+{q:"Un angle de 7π/4 correspond à combien de degrés, et quels sont les signes ?",r:"315 degrés, quatrième quadrant : cosinus positif, sinus négatif."},
+{q:"Quelle est la longueur d'un arc de cercle de rayon 1 correspondant à un angle de π/4 ?",r:"π/4, puisqu'en radians la mesure de l'angle est exactement la longueur de l'arc sur un cercle unité."}
+]},
+
+{t:"Les formules de trigonométrie", obj:["Utiliser périodicité et parité","Appliquer les formules d'addition","Retrouver les formules de duplication"], html:`
+<h4>Périodicité</h4>
+<p>Ajouter un tour complet ne change pas le point sur le cercle. Les fonctions cos et sin sont donc <strong>2π-périodiques</strong> :</p>
+<p style="text-align:center">cos(α + 2π) = cos(α) &nbsp;&nbsp; et &nbsp;&nbsp; sin(α + 2π) = sin(α)</p>
+<h4>Parité</h4>
+<p>Changer α en -α revient à symétriser M par rapport à l'axe des abscisses : l'abscisse ne bouge pas, l'ordonnée change de signe.</p>
+<p style="text-align:center">cos(-α) = cos(α) &nbsp;&nbsp; et &nbsp;&nbsp; sin(-α) = -sin(α)</p>
+<p>Le cosinus est donc pair, le sinus impair.</p>
+<h4>La relation fondamentale</h4>
+<div class="def"><b>Pythagore sur le cercle.</b> cos²(α) + sin²(α) = 1, pour tout α.</div>
+<p>C'est le théorème de Pythagore appliqué au triangle OMM', d'hypoténuse 1. Elle permet de retrouver un sinus à partir d'un cosinus, au signe près — signe que l'on détermine par le quadrant.</p>
+<h4>Formules d'addition</h4>
+<p>cos(α + β) = cos(α)cos(β) - sin(α)sin(β)<br>
+sin(α + β) = sin(α)cos(β) + cos(α)sin(β)</p>
+<p>Moyen mnémotechnique : le cosinus mélange les mêmes fonctions avec un signe moins ; le sinus mélange les fonctions croisées avec un plus.</p>
+<h4>Formules de soustraction</h4>
+<p>On remplace β par -β et on applique la parité :</p>
+<p>cos(α - β) = cos(α)cos(β) + sin(α)sin(β)<br>
+sin(α - β) = sin(α)cos(β) - cos(α)sin(β)</p>
+<h4>Formules de duplication</h4>
+<p>On pose β = α dans les formules d'addition :</p>
+<p>cos(2α) = cos²(α) - sin²(α) = 2cos²(α) - 1 = 1 - 2sin²(α)<br>
+sin(2α) = 2 sin(α) cos(α)</p>
+<p>Les trois écritures du cosinus double s'obtiennent en remplaçant cos² par 1 - sin², ou l'inverse. Elles servent constamment en intégration.</p>
+<div class="piege"><b>Erreur fréquente.</b> cos(2α) n'est pas 2cos(α), et sin(α + β) n'est pas sin(α) + sin(β). Les fonctions trigonométriques ne sont pas linéaires.</div>`,
+retenir:"cos pair, sin impair, tous deux 2π-périodiques. cos² + sin² = 1. Addition : cos mélange les mêmes avec un moins, sin croise avec un plus. Duplication = addition avec β = α.",
+exos:[
+{q:"Sachant cos(α) = 3/5 et α dans le premier quadrant, calcule sin(α).",r:"sin²(α) = 1 - 9/25 = 16/25, donc sin(α) = 4/5, positif car premier quadrant."},
+{q:"Sachant sin(α) = -1/2 et α dans le quatrième quadrant, calcule cos(α).",r:"cos²(α) = 1 - 1/4 = 3/4, donc cos(α) = √3/2, positif dans le quatrième quadrant."},
+{q:"Calcule cos(π/12) avec une formule de soustraction.",r:"π/12 = π/3 - π/4. Donc cos = cos(π/3)cos(π/4) + sin(π/3)sin(π/4) = (1/2)(√2/2) + (√3/2)(√2/2) = (√2 + √6)/4."},
+{q:"Calcule sin(7π/12).",r:"7π/12 = π/3 + π/4. sin = sin(π/3)cos(π/4) + cos(π/3)sin(π/4) = (√6 + √2)/4."},
+{q:"Simplifie cos(α + π).",r:"cos(α)cos(π) - sin(α)sin(π) = -cos(α)."},
+{q:"Simplifie sin(π/2 - α).",r:"sin(π/2)cos(α) - cos(π/2)sin(α) = cos(α). C'est la formule de complémentarité."},
+{q:"Sachant sin(α) = 3/5 et cos(α) = 4/5, calcule sin(2α) et cos(2α).",r:"sin(2α) = 2 × (3/5)(4/5) = 24/25. cos(2α) = (16 - 9)/25 = 7/25."},
+{q:"Exprime cos²(α) en fonction de cos(2α).",r:"À partir de cos(2α) = 2cos²(α) - 1 : cos²(α) = (1 + cos(2α))/2. Formule essentielle pour intégrer un carré."},
+{q:"Résous cos(x) = 1/2 sur [0, 2π[.",r:"x = π/3 ou x = 5π/3, les deux points d'abscisse 1/2 sur le cercle."},
+{q:"Résous sin(x) = √2/2 sur [0, 2π[.",r:"x = π/4 ou x = 3π/4, les deux points d'ordonnée √2/2."}
+]},
+
+{t:"Écriture algébrique d'un complexe", obj:["Identifier partie réelle et partie imaginaire","Reconnaître un réel et un imaginaire pur","Comprendre d'où vient le nombre i"], html:`
+<h4>Pourquoi les complexes</h4>
+<p>Historiquement, ils apparaissent au XVI<sup>e</sup> siècle pour écrire les solutions des équations de degré 3. L'idée est d'introduire un nombre, noté i, dont le carré vaut -1 — ce qu'aucun réel ne peut faire.</p>
+<h4>Définition</h4>
+<div class="def"><b>Définition 2.1 du poly.</b> Un nombre complexe est toute expression de la forme a + ib, avec a et b réels. L'ensemble des complexes se note ℂ.</div>
+<p>Pour z = a + ib :</p>
+<ul>
+<li>a est la <strong>partie réelle</strong>, notée Re(z) ;</li>
+<li>b est la <strong>partie imaginaire</strong>, notée Im(z).</li>
+</ul>
+<div class="piege"><b>Im(z) est un réel.</b> Dans z = 3 + 5i, la partie imaginaire est 5, pas 5i. C'est une faute très fréquente en début de semestre.</div>
+<h4>Écriture algébrique</h4>
+<p>L'écriture z = a + ib s'appelle l'écriture algébrique de z. Elle est <strong>unique</strong> : deux complexes sont égaux si et seulement si leurs parties réelles sont égales et leurs parties imaginaires aussi. Une égalité entre complexes équivaut donc toujours à un système de deux équations réelles.</p>
+<h4>Cas particuliers</h4>
+<ul>
+<li>Si b = 0, on écrit simplement a : les réels sont des complexes, donc ℝ ⊂ ℂ.</li>
+<li>Si a = 0, on écrit ib et l'on dit que z est <strong>imaginaire pur</strong>.</li>
+</ul>
+<p>Autrement dit : Im(z) = 0 signifie z réel, et Re(z) = 0 signifie z imaginaire pur.</p>
+<h4>La chaîne complète</h4>
+<p>ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ. Chaque étape résout une équation impossible dans la précédente ; ℂ résout x² = -1, et en fait beaucoup plus, puisque toute équation polynomiale y admet des solutions.</p>`,
+retenir:"z = a + ib avec a et b réels, écriture unique. Re(z) = a, Im(z) = b, et Im(z) est un réel. Réel équivaut à Im nulle, imaginaire pur à Re nulle.",
+exos:[
+{q:"Donne Re(z) et Im(z) pour z = -4 + 7i.",r:"Re(z) = -4 et Im(z) = 7."},
+{q:"Donne Re(z) et Im(z) pour z = 3i.",r:"Re(z) = 0 et Im(z) = 3. C'est un imaginaire pur."},
+{q:"Donne Re(z) et Im(z) pour z = 5.",r:"Re(z) = 5 et Im(z) = 0. C'est un réel."},
+{q:"Résous l'équation complexe x + iy = 2 - 3i avec x et y réels.",r:"Par unicité de l'écriture algébrique : x = 2 et y = -3."},
+{q:"Trouve les réels x et y tels que (x + 2) + i(y - 1) = 5 + 3i.",r:"x + 2 = 5 et y - 1 = 3, donc x = 3 et y = 4."},
+{q:"z = (2 - m) + i(m + 1) est réel pour quelle valeur réelle de m ?",r:"Il faut la partie imaginaire nulle : m + 1 = 0, donc m = -1."},
+{q:"Pour quelle valeur de m le même z est-il imaginaire pur ?",r:"Il faut 2 - m = 0, donc m = 2."},
+{q:"Vrai ou faux : tout réel est un complexe.",r:"Vrai. Un réel a s'écrit a + i0, donc ℝ ⊂ ℂ."},
+{q:"Vrai ou faux : 0 est imaginaire pur.",r:"Vrai selon la définition, puisque sa partie réelle est nulle. Il est à la fois réel et imaginaire pur."}
+]},
+
+{t:"Somme, produit, inverse", obj:["Calculer avec les complexes","Retrouver la règle du produit","Mettre un quotient sous forme algébrique"], html:`
+<h4>Addition</h4>
+<p>On ajoute les parties réelles entre elles et les parties imaginaires entre elles :</p>
+<p style="text-align:center">(a + ib) + (a' + ib') = (a + a') + i(b + b')</p>
+<h4>Multiplication</h4>
+<p>On développe comme d'habitude, puis on remplace i² par -1 :</p>
+<p style="text-align:center">(a + ib)(a' + ib') = aa' + iab' + iba' + i²bb' = (aa' - bb') + i(ab' + ba')</p>
+<p>Le poly vérifie d'ailleurs la cohérence : avec cette règle, i × i = (0×0 - 1×1) + i(0×1 + 1×0) = -1. La définition tient debout.</p>
+<div class="piege"><b>Le signe moins.</b> Dans la partie réelle du produit, c'est aa' <strong>moins</strong> bb'. Ce moins vient de i² = -1 et s'oublie une fois sur deux.</div>
+<h4>Inverse</h4>
+<p>Tout complexe non nul admet un inverse. Le résultat du poly :</p>
+<p style="text-align:center">1/z = a/(a² + b²) - i b/(a² + b²) = (a - ib)/(a² + b²)</p>
+<p>En pratique on ne retient pas cette formule : on utilise la <strong>méthode du conjugué</strong>, qui donne le même résultat sans effort.</p>
+<h4>Méthode : mettre un quotient sous forme algébrique</h4>
+<p>On multiplie le numérateur et le dénominateur par le conjugué du dénominateur. Le dénominateur devient alors un réel.</p>
+<p><em>Exemple guidé.</em> Calculons (3 + 2i)/(1 - i).<br>
+On multiplie en haut et en bas par 1 + i :<br>
+Numérateur : (3 + 2i)(1 + i) = 3 + 3i + 2i + 2i² = 1 + 5i.<br>
+Dénominateur : (1 - i)(1 + i) = 1 - i² = 2.<br>
+Résultat : 1/2 + (5/2)i.</p>
+<h4>Puissances</h4>
+<p>z<sup>n</sup> est le produit de n facteurs égaux à z, avec z<sup>0</sup> = 1 et z<sup>-n</sup> = (1/z)<sup>n</sup>. Les puissances de i sont cycliques de période 4 : i⁰ = 1, i¹ = i, i² = -1, i³ = -i, i⁴ = 1, et ainsi de suite. Pour calculer i<sup>n</sup>, il suffit donc de regarder le reste de n dans la division par 4.</p>`,
+retenir:"On développe et on remplace i² par -1. Le produit donne (aa' - bb') + i(ab' + ba'). Pour un quotient, multiplier haut et bas par le conjugué du dénominateur. Les puissances de i sont cycliques de période 4.",
+exos:[
+{q:"Calcule (2 + 3i) + (5 - i).",r:"7 + 2i."},
+{q:"Calcule (2 + 3i)(1 - 2i).",r:"2 - 4i + 3i - 6i² = 2 - i + 6 = 8 - i."},
+{q:"Calcule (1 + i)².",r:"1 + 2i + i² = 2i."},
+{q:"Calcule (1 + i)⁴.",r:"C'est ((1+i)²)² = (2i)² = -4."},
+{q:"Que vaut i^2026 ?",r:"2026 = 4 × 506 + 2, donc i^2026 = i² = -1."},
+{q:"Mets 1/(2 + i) sous forme algébrique.",r:"On multiplie par le conjugué : (2 - i)/((2+i)(2-i)) = (2 - i)/5 = 2/5 - (1/5)i."},
+{q:"Mets (1 + 2i)/(3 - i) sous forme algébrique.",r:"Multiplier par 3 + i : numérateur (1+2i)(3+i) = 3 + i + 6i - 2 = 1 + 7i ; dénominateur 9 + 1 = 10. Résultat : 1/10 + (7/10)i."},
+{q:"Résous z + 2i = 3z - 4 dans ℂ.",r:"-2z = -4 - 2i, donc z = 2 + i. On calcule comme dans ℝ."},
+{q:"Calcule (2 - i)(2 + i).",r:"4 - i² = 5. Un produit de conjugués donne toujours un réel positif."},
+{q:"Développe (1 + i)³ avec le binôme de Newton.",r:"1 + 3i + 3i² + i³ = 1 + 3i - 3 - i = -2 + 2i. Le binôme vaut aussi dans ℂ."}
+]},
+
+{t:"Conjugué et module", obj:["Calculer conjugué et module","Utiliser leurs propriétés","Démontrer l'inégalité triangulaire"], html:`
+<h4>Conjugué</h4>
+<div class="def"><b>Définition 2.2 du poly.</b> Pour z = a + ib, le conjugué de z est le complexe a - ib. On le note z barre.</div>
+<p>On a donc Re(z barre) = Re(z) et Im(z barre) = -Im(z). Géométriquement, c'est le symétrique par rapport à l'axe des abscisses.</p>
+<h4>Module</h4>
+<div class="def"><b>Définition.</b> Le module de z = a + ib est le réel positif |z| = √(a² + b²).</div>
+<p>Si z est réel, |z| est simplement sa valeur absolue : le module généralise la valeur absolue. Géométriquement, c'est la distance de l'origine au point d'affixe z.</p>
+<h4>La relation centrale</h4>
+<p>z × z barre = (a + ib)(a - ib) = a² + b² = |z|². C'est un <strong>réel positif</strong>, et c'est ce qui fait fonctionner la méthode du conjugué : pour z non nul, 1/z = z barre / |z|².</p>
+<h4>Propriétés du conjugué</h4>
+<ul>
+<li>Le conjugué d'une somme est la somme des conjugués, idem pour le produit et le quotient.</li>
+<li>Le conjugué du conjugué est z.</li>
+<li>z + z barre = 2 Re(z) &nbsp; et &nbsp; z - z barre = 2i Im(z).</li>
+<li>z barre = z équivaut à z réel ; z barre = -z équivaut à z imaginaire pur.</li>
+</ul>
+<h4>Propriétés du module</h4>
+<ul>
+<li>|z|² = z × z barre, et |z barre| = |z|.</li>
+<li>|zz'| = |z| |z'| et |z/z'| = |z| / |z'|.</li>
+<li>|z| = 0 équivaut à z = 0.</li>
+</ul>
+<div class="piege"><b>Pas de linéarité.</b> Le module d'une somme n'est pas la somme des modules. C'est justement l'objet de l'inégalité triangulaire.</div>
+<h4>Inégalité triangulaire</h4>
+<p style="text-align:center">|z + z'| ≤ |z| + |z'|</p>
+<p><strong>Preuve du poly, en trois idées.</strong> D'abord on remarque que |Re(z)| = |a| = √a² ≤ √(a² + b²) = |z|. Ensuite on développe |z + z'|² = (z + z')(z barre + z' barre) = |z|² + 2Re(z z' barre) + |z'|². Enfin on majore Re(z z' barre) par |z z' barre| = |z||z'|, ce qui donne |z|² + 2|z||z'| + |z'|² = (|z| + |z'|)². On conclut en prenant la racine carrée.</p>
+<p>Géométriquement, elle dit qu'un côté d'un triangle est plus court que la somme des deux autres.</p>`,
+retenir:"Conjugué = on change le signe de la partie imaginaire. Module = distance à l'origine. z fois son conjugué donne |z|², un réel positif : c'est la clé de tous les calculs de quotient.",
+exos:[
+{q:"Donne le conjugué et le module de z = 3 - 4i.",r:"Conjugué : 3 + 4i. Module : √(9 + 16) = 5."},
+{q:"Donne le module de z = -2i.",r:"|z| = √(0 + 4) = 2."},
+{q:"Calcule |(1 + i)(2 - 3i)| sans développer.",r:"|1+i| × |2-3i| = √2 × √13 = √26."},
+{q:"Calcule |(3 + 4i)/(1 - i)|.",r:"5/√2, soit 5√2/2."},
+{q:"Montre que z + z barre est toujours réel.",r:"Avec z = a + ib, la somme vaut 2a, qui est réel. C'est aussi 2 Re(z)."},
+{q:"Résous z barre = 2z dans ℂ.",r:"a - ib = 2a + 2ib donne a = 2a et -b = 2b, donc a = 0 et b = 0 : z = 0."},
+{q:"Détermine l'ensemble des z tels que |z| = 3.",r:"Le cercle de centre O et de rayon 3, puisque le module est la distance à l'origine."},
+{q:"Détermine l'ensemble des z tels que |z - 1| = 2.",r:"Le cercle de centre le point d'affixe 1 et de rayon 2 : |z - a| est la distance entre les points d'affixes z et a."},
+{q:"Vérifie l'inégalité triangulaire avec z = 3 et z' = 4i.",r:"|z + z'| = |3 + 4i| = 5, et |z| + |z'| = 3 + 4 = 7. On a bien 5 ≤ 7."},
+{q:"Quand y a-t-il égalité dans l'inégalité triangulaire ?",r:"Quand Re(z z' barre) = |z||z'|, c'est-à-dire quand z et z' ont le même argument : les deux vecteurs sont alignés et de même sens."}
+]},
+
+{t:"Plan d'Argand, forme exponentielle et argument", obj:["Placer un complexe dans le plan","Passer de la forme algébrique à la forme exponentielle","Manipuler l'argument"], html:`
+<h4>Plan d'Argand</h4>
+<p>On fixe un repère orthonormé. Au point M de coordonnées (a, b) on associe le complexe z = a + ib, appelé <strong>affixe</strong> de M. Réciproquement, tout complexe correspond à un point.</p>
+<p>Dans cette représentation, |z| est la longueur OM, et le conjugué correspond au symétrique par rapport à l'axe des abscisses.</p>
+<h4>Exponentielle complexe</h4>
+<div class="def"><b>Définition.</b> Pour θ réel, e<sup>iθ</sup> = cos θ + i sin θ.</div>
+<p>C'est exactement le point du cercle trigonométrique d'angle θ. Conséquence immédiate : |e<sup>iθ</sup>| = 1, puisque cos² + sin² = 1.</p>
+<h4>Propriétés</h4>
+<ul>
+<li>e<sup>i(θ+θ')</sup> = e<sup>iθ</sup> × e<sup>iθ'</sup> — l'exponentielle transforme les sommes d'angles en produits.</li>
+<li>e<sup>-iθ</sup> est à la fois le conjugué et l'inverse de e<sup>iθ</sup>.</li>
+<li>e<sup>iθ</sup> = 1 équivaut à θ = 2kπ avec k entier.</li>
+</ul>
+<h4>Argument</h4>
+<div class="def"><b>Définition 3.1 du poly.</b> Pour z non nul, il existe θ réel tel que z = |z| e<sup>iθ</sup>. Ce θ est l'argument de z, noté arg(z) = θ modulo 2π. L'écriture |z| e<sup>iθ</sup> est la forme exponentielle, ou trigonométrique, de z.</div>
+<p>L'argument n'est défini qu'à un multiple de 2π près, ce que signifie la mention « modulo 2π ». Le complexe 0 n'a pas d'argument.</p>
+<h4>Propriétés de l'argument</h4>
+<ul>
+<li>arg(zz') = arg(z) + arg(z') modulo 2π</li>
+<li>arg(z<sup>n</sup>) = n arg(z) modulo 2π</li>
+<li>arg(z barre) = -arg(z) et arg(1/z) = -arg(z)</li>
+</ul>
+<p>Retiens la logique : multiplier des complexes revient à <strong>multiplier les modules et additionner les arguments</strong>. C'est ce qui fait de la multiplication complexe une rotation-homothétie.</p>
+<h4>Méthode : passer en forme exponentielle</h4>
+<p>Pour z = 1 + i : le module vaut √2. On factorise : z = √2 (1/√2 + i/√2) = √2 (√2/2 + i√2/2). On reconnaît cos(π/4) et sin(π/4), donc z = √2 e<sup>iπ/4</sup>.</p>
+<p>Méthode générale : calculer |z|, factoriser par |z|, puis identifier l'angle dont le cosinus et le sinus apparaissent. Le tableau de valeurs du premier chapitre suffit dans presque tous les exercices.</p>`,
+retenir:"e^(iθ) = cos θ + i sin θ est le point du cercle d'angle θ. Forme exponentielle : z = |z| e^(iθ). Multiplier des complexes = multiplier les modules, additionner les arguments.",
+exos:[
+{q:"Mets z = 1 + i sous forme exponentielle.",r:"|z| = √2 et l'angle est π/4, donc z = √2 e^(iπ/4)."},
+{q:"Mets z = -1 sous forme exponentielle.",r:"|z| = 1 et l'angle est π, donc z = e^(iπ)."},
+{q:"Mets z = 2i sous forme exponentielle.",r:"|z| = 2 et l'angle est π/2, donc z = 2 e^(iπ/2)."},
+{q:"Mets z = 1 - i√3 sous forme exponentielle.",r:"|z| = √(1+3) = 2. On factorise : 2(1/2 - i√3/2), ce qui correspond à l'angle -π/3. Donc z = 2 e^(-iπ/3)."},
+{q:"Mets z = 3 e^(iπ/6) sous forme algébrique.",r:"3(cos(π/6) + i sin(π/6)) = 3(√3/2 + i/2) = 3√3/2 + (3/2)i."},
+{q:"Calcule le produit 2e^(iπ/3) × 5e^(iπ/6) sous forme exponentielle.",r:"On multiplie les modules et on additionne les arguments : 10 e^(iπ/2), soit 10i."},
+{q:"Que vaut arg((1+i)⁸) ?",r:"8 × π/4 = 2π, soit 0 modulo 2π. Le nombre est donc réel positif."},
+{q:"Calcule (1+i)⁸ en passant par la forme exponentielle.",r:"(√2)⁸ e^(i2π) = 16. Bien plus rapide que huit multiplications."},
+{q:"Donne l'argument de z barre si arg(z) = 2π/3.",r:"-2π/3 modulo 2π, soit 4π/3."},
+{q:"Que représente géométriquement la multiplication par i ?",r:"Une rotation d'angle π/2 autour de l'origine, puisque i a pour module 1 et pour argument π/2."}
+]},
+
+{t:"Moivre, Euler et applications", obj:["Utiliser la formule de Moivre","Utiliser les formules d'Euler","Linéariser une expression trigonométrique"], html:`
+<h4>Formule de Moivre</h4>
+<div class="def"><b>Énoncé.</b> Pour θ réel et n entier, (cos θ + i sin θ)<sup>n</sup> = cos(nθ) + i sin(nθ).</div>
+<p>C'est simplement l'écriture (e<sup>iθ</sup>)<sup>n</sup> = e<sup>inθ</sup>. Elle permet d'exprimer cos(nθ) et sin(nθ) en fonction de cos θ et sin θ : on développe le membre de gauche avec le binôme de Newton, puis on identifie parties réelles et imaginaires.</p>
+<p><em>Exemple guidé.</em> Pour n = 2 : (cos θ + i sin θ)² = cos²θ - sin²θ + 2i sin θ cos θ. En identifiant avec cos(2θ) + i sin(2θ), on retrouve d'un coup les deux formules de duplication.</p>
+<h4>Formules d'Euler</h4>
+<p>En additionnant et en soustrayant e<sup>iθ</sup> = cos θ + i sin θ et e<sup>-iθ</sup> = cos θ - i sin θ :</p>
+<p style="text-align:center">cos θ = (e<sup>iθ</sup> + e<sup>-iθ</sup>)/2 &nbsp;&nbsp;&nbsp; sin θ = (e<sup>iθ</sup> - e<sup>-iθ</sup>)/(2i)</p>
+<div class="piege"><b>Le 2i.</b> C'est bien 2i au dénominateur du sinus, pas 2. L'oubli du i est l'erreur classique.</div>
+<h4>Linéarisation</h4>
+<p>Transformer une puissance de cosinus ou de sinus en une somme de cosinus et de sinus d'angles multiples. On remplace par Euler, on développe avec le binôme, puis on regroupe pour reformer des Euler.</p>
+<p><em>Exemple guidé.</em> cos²θ = ((e<sup>iθ</sup> + e<sup>-iθ</sup>)/2)² = (e<sup>2iθ</sup> + 2 + e<sup>-2iθ</sup>)/4 = (2cos(2θ) + 2)/4 = (1 + cos(2θ))/2.</p>
+<p>C'est le geste qui rend intégrable une puissance de cosinus, et il resservira toute l'année en Analyse.</p>
+<h4>Racines n-ièmes de l'unité</h4>
+<p>Les solutions de z<sup>n</sup> = 1 sont les n complexes e<sup>2ikπ/n</sup> pour k allant de 0 à n-1. Ils forment un polygone régulier à n sommets inscrit dans le cercle unité, et leur somme est nulle dès que n dépasse 1.</p>
+<p>Ces racines sont au cœur de la transformée de Fourier rapide, l'un des algorithmes les plus utilisés en informatique.</p>`,
+retenir:"Moivre : (cos θ + i sin θ)^n = cos nθ + i sin nθ. Euler : cos et sin s'écrivent avec des exponentielles, attention au 2i pour le sinus. Linéariser = remplacer par Euler, développer, regrouper.",
+exos:[
+{q:"Utilise Moivre pour exprimer cos(3θ) en fonction de cos θ.",r:"On développe (cos θ + i sin θ)³ et on prend la partie réelle : cos³θ - 3cos θ sin²θ. En remplaçant sin² par 1 - cos² : 4cos³θ - 3cos θ."},
+{q:"Exprime sin(3θ) en fonction de sin θ.",r:"Partie imaginaire du même développement : 3cos²θ sin θ - sin³θ = 3sin θ - 4sin³θ."},
+{q:"Linéarise sin²θ.",r:"((e^(iθ) - e^(-iθ))/(2i))² = (e^(2iθ) - 2 + e^(-2iθ))/(-4) = (2 - 2cos 2θ)/4 = (1 - cos 2θ)/2."},
+{q:"Linéarise cos³θ.",r:"En développant ((e^(iθ)+e^(-iθ))/2)³ on obtient (cos 3θ + 3cos θ)/4."},
+{q:"Calcule (1 + i)^10 avec Moivre.",r:"1+i = √2 e^(iπ/4), donc la puissance vaut (√2)^10 e^(i10π/4) = 32 e^(i5π/2) = 32 e^(iπ/2) = 32i."},
+{q:"Résous z³ = 1 dans ℂ.",r:"Les trois racines cubiques de l'unité : 1, e^(2iπ/3) et e^(4iπ/3), soit 1, -1/2 + i√3/2 et -1/2 - i√3/2."},
+{q:"Résous z⁴ = 1 dans ℂ.",r:"1, i, -1, -i, c'est-à-dire e^(2ikπ/4) pour k = 0, 1, 2, 3."},
+{q:"Que vaut la somme des trois racines cubiques de l'unité ?",r:"0. C'est une somme géométrique de raison e^(2iπ/3), dont le numérateur s'annule."},
+{q:"Que vaut e^(iπ) + 1 ?",r:"0, puisque e^(iπ) = cos π + i sin π = -1. C'est l'identité d'Euler."},
+{q:"Résous z⁶ = 64 dans ℂ.",r:"Le module des solutions vaut 2 et les arguments sont 2kπ/6. Les solutions sont 2e^(ikπ/3) pour k allant de 0 à 5."}
+]},
+
+{t:"Racine carrée d'un nombre complexe", obj:["Comprendre pourquoi la notation racine est interdite dans ℂ","Trouver une racine carrée par la forme exponentielle","Trouver une racine carrée par le système algébrique"], html:`
+<h4>Le résultat</h4>
+<div class="def"><b>Proposition 4.1 du poly.</b> Tout nombre complexe z admet une racine carrée : il existe w dans ℂ tel que z = w².</div>
+<p>Si w convient, alors -w aussi, puisque (-w)² = w². Ce sont les deux seules.</p>
+<div class="piege"><b>Interdiction de notation.</b> Comme il y a deux racines sans moyen naturel de choisir laquelle, on ne peut pas parler de « la » racine carrée d'un complexe. Le symbole √z est donc <strong>interdit</strong> dans ℂ, sauf si z est un réel positif. Écrire √(-4) = 2i est une faute.</div>
+<h4>Méthode 1 : par la forme exponentielle</h4>
+<p>Si z = |z| e<sup>iθ</sup>, alors w = √|z| e<sup>iθ/2</sup> convient, puisque son carré redonne z. C'est immédiat lorsque l'argument est un angle usuel.</p>
+<p><em>Exemple.</em> Pour z = 4i = 4 e<sup>iπ/2</sup>, une racine est 2 e<sup>iπ/4</sup> = √2 + i√2. L'autre est son opposée.</p>
+<h4>Méthode 2 : par le système algébrique</h4>
+<p>C'est la méthode du poly, utile quand l'argument n'est pas un angle remarquable. On pose z = a + ib et w = x + iy, et on écrit w² = z :</p>
+<p>(x + iy)² = a + ib donne x² - y² = a et 2xy = b.</p>
+<p>On ajoute une troisième équation en prenant les modules : |w|² = |z|, c'est-à-dire x² + y² = √(a² + b²).</p>
+<p>Le système à trois équations se résout facilement : en additionnant les deux équations en x² et y² on obtient x², en les soustrayant on obtient y². Enfin, le <strong>signe de b</strong> indique si x et y sont de même signe (b positif) ou de signes contraires (b négatif).</p>
+<h4>Exemple guidé</h4>
+<p>Cherchons une racine carrée de z = 3 + 4i. On a |z| = 5, donc :</p>
+<ul>
+<li>x² + y² = 5</li>
+<li>x² - y² = 3</li>
+<li>2xy = 4, donc xy = 2 &gt; 0 : x et y de même signe.</li>
+</ul>
+<p>En additionnant : 2x² = 8, donc x = ±2. En soustrayant : 2y² = 2, donc y = ±1. Comme le produit est positif, les solutions sont w = 2 + i et w = -2 - i. Vérification : (2+i)² = 4 + 4i - 1 = 3 + 4i.</p>`,
+retenir:"Tout complexe a exactement deux racines carrées, opposées. Le symbole √ est interdit dans ℂ. Deux méthodes : forme exponentielle si l'angle est usuel, sinon le système à trois équations avec le signe de b pour conclure.",
+exos:[
+{q:"Trouve les racines carrées de -9.",r:"3i et -3i, puisque (3i)² = -9. Attention : on n'écrit pas √(-9)."},
+{q:"Trouve les racines carrées de i.",r:"i = e^(iπ/2), donc une racine est e^(iπ/4) = √2/2 + i√2/2, et l'autre son opposée."},
+{q:"Trouve les racines carrées de 2i.",r:"2i = 2e^(iπ/2), donc √2 e^(iπ/4) = 1 + i, et -1 - i."},
+{q:"Trouve les racines carrées de 8 - 6i.",r:"|z| = 10. Système : x² + y² = 10, x² - y² = 8, xy = -3 < 0. Donc x² = 9 et y² = 1, avec x et y de signes contraires : w = 3 - i ou w = -3 + i."},
+{q:"Trouve les racines carrées de -5 + 12i.",r:"|z| = 13. x² = 4 et y² = 9, avec xy = 6 > 0 : w = 2 + 3i ou w = -2 - 3i."},
+{q:"Pourquoi ne peut-on pas écrire √(-1) = i ?",r:"Parce que -i convient tout autant, et qu'aucun critère naturel ne permet de choisir. La notation supposerait une racine privilégiée, ce qui n'existe pas dans ℂ."},
+{q:"Trouve les racines carrées de -4.",r:"2i et -2i."},
+{q:"Trouve les racines carrées de 4e^(2iπ/3).",r:"2e^(iπ/3) = 1 + i√3, et son opposée -1 - i√3."}
+]},
+
+{t:"Équations du second degré dans ℂ", obj:["Résoudre une équation à coefficients complexes","Appliquer le cas réel selon le signe du discriminant","Factoriser un trinôme"], html:`
+<h4>Le cas général</h4>
+<div class="def"><b>Proposition 4.2 du poly.</b> L'équation az² + bz + c = 0, avec a, b, c complexes et a non nul, possède deux solutions dans ℂ (éventuellement confondues). En notant Δ = b² - 4ac et δ une racine carrée de Δ, les solutions sont z₁ = (-b + δ)/(2a) et z₂ = (-b - δ)/(2a).</div>
+<p>La différence avec le lycée : dans ℂ, il n'y a plus de cas sans solution, puisque tout Δ admet une racine carrée. Il faut simplement la calculer avec le chapitre précédent.</p>
+<h4>D'où vient la formule</h4>
+<p>C'est la mise sous forme canonique. On factorise par a, on complète le carré, et il reste une différence de deux carrés que l'on factorise :</p>
+<p>az² + bz + c = a[(z + b/2a)² - Δ/4a²] = a[(z + b/2a)² - (δ/2a)²] = a(z - z₁)(z - z₂)</p>
+<p>Cette factorisation est aussi importante que la formule elle-même : elle permet de simplifier des fractions rationnelles et de résoudre des inéquations.</p>
+<h4>Le cas des coefficients réels</h4>
+<p><b>Proposition 4.3 du poly.</b> Si a, b, c sont réels et a non nul, Δ est réel et :</p>
+<ul>
+<li>si Δ &gt; 0 : deux solutions réelles, (-b ± √Δ)/(2a) ;</li>
+<li>si Δ = 0 : une solution réelle double, -b/(2a) ;</li>
+<li>si Δ &lt; 0 : deux solutions complexes conjuguées, (-b ± i√(-Δ))/(2a).</li>
+</ul>
+<div class="piege"><b>Le signe sous la racine.</b> Quand Δ est négatif, on écrit i√(-Δ), avec -Δ positif. Écrire √Δ n'aurait aucun sens.</div>
+<h4>Exemple guidé, coefficients réels</h4>
+<p>z² + 2z + 5 = 0. Δ = 4 - 20 = -16, négatif. Alors √(-Δ) = 4, et les solutions sont (-2 ± 4i)/2 = -1 + 2i et -1 - 2i. Elles sont bien conjuguées.</p>
+<h4>Exemple guidé, coefficients complexes</h4>
+<p>z² - (3 + i)z + (2 + 2i) = 0. On calcule Δ = (3+i)² - 4(2+2i) = 9 + 6i - 1 - 8 - 8i = -2i. Une racine carrée de -2i est δ = 1 - i (vérification : (1-i)² = 1 - 2i - 1 = -2i). Les solutions sont donc ((3+i) ± (1-i))/2, soit z₁ = 2 et z₂ = 1 + i.</p>
+<h4>Somme et produit</h4>
+<p>Les deux solutions vérifient toujours z₁ + z₂ = -b/a et z₁z₂ = c/a. C'est un moyen rapide de vérifier un résultat, ou de trouver la seconde racine quand on en devine une.</p>`,
+retenir:"Dans ℂ il y a toujours deux solutions. On calcule Δ, on en cherche une racine carrée δ, et on applique (-b ± δ)/(2a). Avec des coefficients réels et Δ négatif, les solutions sont conjuguées.",
+exos:[
+{q:"Résous z² + 1 = 0.",r:"z² = -1, donc z = i ou z = -i."},
+{q:"Résous z² - 2z + 5 = 0.",r:"Δ = 4 - 20 = -16. Solutions : (2 ± 4i)/2 = 1 + 2i et 1 - 2i."},
+{q:"Résous z² + z + 1 = 0.",r:"Δ = 1 - 4 = -3. Solutions : (-1 ± i√3)/2, les deux racines cubiques non réelles de l'unité."},
+{q:"Résous z² - 4z + 4 = 0.",r:"Δ = 0, racine double z = 2."},
+{q:"Résous z² - 6z + 13 = 0.",r:"Δ = 36 - 52 = -16. Solutions : 3 + 2i et 3 - 2i."},
+{q:"Factorise z² + 4 dans ℂ.",r:"Les racines sont 2i et -2i, donc z² + 4 = (z - 2i)(z + 2i)."},
+{q:"Résous z² - (1 + 3i)z + (-2 + 2i) = 0.",r:"Δ = (1+3i)² - 4(-2+2i) = 1 + 6i - 9 + 8 - 8i = -2i. Une racine carrée est 1 - i. Solutions : ((1+3i) ± (1-i))/2, soit 1 + i et i."},
+{q:"Une équation à coefficients réels admet 2 - 3i comme solution. Quelle est l'autre ?",r:"2 + 3i. Avec des coefficients réels, les solutions non réelles vont toujours par paires conjuguées."},
+{q:"Trouve l'équation du second degré unitaire dont les solutions sont 1+i et 1-i.",r:"Somme = 2, produit = (1+i)(1-i) = 2. L'équation est z² - 2z + 2 = 0."},
+{q:"Résous z⁴ + 3z² - 4 = 0 dans ℂ.",r:"On pose Z = z². Alors Z² + 3Z - 4 = 0 donne Z = 1 ou Z = -4. D'où z = ±1 ou z = ±2i : quatre solutions."}
+]}
+];
+const CALCULUS = {
+  code:"EP1.3.1", nom:"Calculus et raisonnement", ects:4, h:"10h CM \u00b7 30h TD",
+  resume:"Le socle math\u00e9matique du semestre. Les huit premiers chapitres suivent le polycopi\u00e9 du cours (chapitre Nombres, puis chapitre Nombres complexes), avec un cours simplifi\u00e9 et beaucoup d'exercices corrig\u00e9s ; les suivants couvrent la partie analyse annonc\u00e9e plus tard dans le semestre.",
+  chapitres: [CALCULUS_BASE.chapitres[0]].concat(CH_NOMBRES, CH_COMPLEXES, CALCULUS_BASE.chapitres.slice(1))
+};
 const AP2 = {code:"EP2.1.1", nom:"Algorithmique et programmation 2 : structures", ects:4, h:"6h CM · 10h TD · 14h TP",
 resume:"La suite directe d'AP1 : au lieu de manipuler des tableaux, on construit ses propres structures de données et on choisit celle qui convient au problème. C'est le cours qui sépare ceux qui savent coder de ceux qui savent concevoir.",
 chapitres:[
